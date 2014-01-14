@@ -1,0 +1,490 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BCFE629C1885DCF500B79DAD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCFE629B1885DCF500B79DAD /* Foundation.framework */; };
+		BCFE629E1885DCF500B79DAD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCFE629D1885DCF500B79DAD /* CoreGraphics.framework */; };
+		BCFE62A01885DCF500B79DAD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCFE629F1885DCF500B79DAD /* UIKit.framework */; };
+		BCFE62A61885DCF500B79DAD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BCFE62A41885DCF500B79DAD /* InfoPlist.strings */; };
+		BCFE62A81885DCF500B79DAD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFE62A71885DCF500B79DAD /* main.m */; };
+		BCFE62AC1885DCF500B79DAD /* MJAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFE62AB1885DCF500B79DAD /* MJAppDelegate.m */; };
+		BCFE62AF1885DCF500B79DAD /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCFE62AD1885DCF500B79DAD /* Main_iPhone.storyboard */; };
+		BCFE62B21885DCF500B79DAD /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCFE62B01885DCF500B79DAD /* Main_iPad.storyboard */; };
+		BCFE62B51885DCF500B79DAD /* MJViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFE62B41885DCF500B79DAD /* MJViewController.m */; };
+		BCFE62B71885DCF500B79DAD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCFE62B61885DCF500B79DAD /* Images.xcassets */; };
+		BCFE62BE1885DCF500B79DAD /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCFE62BD1885DCF500B79DAD /* XCTest.framework */; };
+		BCFE62BF1885DCF500B79DAD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCFE629B1885DCF500B79DAD /* Foundation.framework */; };
+		BCFE62C01885DCF500B79DAD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCFE629F1885DCF500B79DAD /* UIKit.framework */; };
+		BCFE62C81885DCF500B79DAD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BCFE62C61885DCF500B79DAD /* InfoPlist.strings */; };
+		BCFE62CA1885DCF500B79DAD /* MahjongEyeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFE62C91885DCF500B79DAD /* MahjongEyeTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BCFE62C11885DCF500B79DAD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BCFE62901885DCF500B79DAD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BCFE62971885DCF500B79DAD;
+			remoteInfo = MahjongEye;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		BCFE62981885DCF500B79DAD /* MahjongEye.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MahjongEye.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BCFE629B1885DCF500B79DAD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		BCFE629D1885DCF500B79DAD /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		BCFE629F1885DCF500B79DAD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		BCFE62A31885DCF500B79DAD /* MahjongEye-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MahjongEye-Info.plist"; sourceTree = "<group>"; };
+		BCFE62A51885DCF500B79DAD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BCFE62A71885DCF500B79DAD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BCFE62A91885DCF500B79DAD /* MahjongEye-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MahjongEye-Prefix.pch"; sourceTree = "<group>"; };
+		BCFE62AA1885DCF500B79DAD /* MJAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MJAppDelegate.h; sourceTree = "<group>"; };
+		BCFE62AB1885DCF500B79DAD /* MJAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MJAppDelegate.m; sourceTree = "<group>"; };
+		BCFE62AE1885DCF500B79DAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		BCFE62B11885DCF500B79DAD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
+		BCFE62B31885DCF500B79DAD /* MJViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MJViewController.h; sourceTree = "<group>"; };
+		BCFE62B41885DCF500B79DAD /* MJViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MJViewController.m; sourceTree = "<group>"; };
+		BCFE62B61885DCF500B79DAD /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		BCFE62BC1885DCF500B79DAD /* MahjongEyeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MahjongEyeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BCFE62BD1885DCF500B79DAD /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		BCFE62C51885DCF500B79DAD /* MahjongEyeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MahjongEyeTests-Info.plist"; sourceTree = "<group>"; };
+		BCFE62C71885DCF500B79DAD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BCFE62C91885DCF500B79DAD /* MahjongEyeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MahjongEyeTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BCFE62951885DCF500B79DAD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCFE629E1885DCF500B79DAD /* CoreGraphics.framework in Frameworks */,
+				BCFE62A01885DCF500B79DAD /* UIKit.framework in Frameworks */,
+				BCFE629C1885DCF500B79DAD /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BCFE62B91885DCF500B79DAD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCFE62BE1885DCF500B79DAD /* XCTest.framework in Frameworks */,
+				BCFE62C01885DCF500B79DAD /* UIKit.framework in Frameworks */,
+				BCFE62BF1885DCF500B79DAD /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BCFE628F1885DCF500B79DAD = {
+			isa = PBXGroup;
+			children = (
+				BCFE62A11885DCF500B79DAD /* MahjongEye */,
+				BCFE62C31885DCF500B79DAD /* MahjongEyeTests */,
+				BCFE629A1885DCF500B79DAD /* Frameworks */,
+				BCFE62991885DCF500B79DAD /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BCFE62991885DCF500B79DAD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BCFE62981885DCF500B79DAD /* MahjongEye.app */,
+				BCFE62BC1885DCF500B79DAD /* MahjongEyeTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BCFE629A1885DCF500B79DAD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BCFE629B1885DCF500B79DAD /* Foundation.framework */,
+				BCFE629D1885DCF500B79DAD /* CoreGraphics.framework */,
+				BCFE629F1885DCF500B79DAD /* UIKit.framework */,
+				BCFE62BD1885DCF500B79DAD /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BCFE62A11885DCF500B79DAD /* MahjongEye */ = {
+			isa = PBXGroup;
+			children = (
+				BCFE62AA1885DCF500B79DAD /* MJAppDelegate.h */,
+				BCFE62AB1885DCF500B79DAD /* MJAppDelegate.m */,
+				BCFE62AD1885DCF500B79DAD /* Main_iPhone.storyboard */,
+				BCFE62B01885DCF500B79DAD /* Main_iPad.storyboard */,
+				BCFE62B31885DCF500B79DAD /* MJViewController.h */,
+				BCFE62B41885DCF500B79DAD /* MJViewController.m */,
+				BCFE62B61885DCF500B79DAD /* Images.xcassets */,
+				BCFE62A21885DCF500B79DAD /* Supporting Files */,
+			);
+			path = MahjongEye;
+			sourceTree = "<group>";
+		};
+		BCFE62A21885DCF500B79DAD /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BCFE62A31885DCF500B79DAD /* MahjongEye-Info.plist */,
+				BCFE62A41885DCF500B79DAD /* InfoPlist.strings */,
+				BCFE62A71885DCF500B79DAD /* main.m */,
+				BCFE62A91885DCF500B79DAD /* MahjongEye-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BCFE62C31885DCF500B79DAD /* MahjongEyeTests */ = {
+			isa = PBXGroup;
+			children = (
+				BCFE62C91885DCF500B79DAD /* MahjongEyeTests.m */,
+				BCFE62C41885DCF500B79DAD /* Supporting Files */,
+			);
+			path = MahjongEyeTests;
+			sourceTree = "<group>";
+		};
+		BCFE62C41885DCF500B79DAD /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BCFE62C51885DCF500B79DAD /* MahjongEyeTests-Info.plist */,
+				BCFE62C61885DCF500B79DAD /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BCFE62971885DCF500B79DAD /* MahjongEye */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BCFE62CD1885DCF500B79DAD /* Build configuration list for PBXNativeTarget "MahjongEye" */;
+			buildPhases = (
+				BCFE62941885DCF500B79DAD /* Sources */,
+				BCFE62951885DCF500B79DAD /* Frameworks */,
+				BCFE62961885DCF500B79DAD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MahjongEye;
+			productName = MahjongEye;
+			productReference = BCFE62981885DCF500B79DAD /* MahjongEye.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BCFE62BB1885DCF500B79DAD /* MahjongEyeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BCFE62D01885DCF500B79DAD /* Build configuration list for PBXNativeTarget "MahjongEyeTests" */;
+			buildPhases = (
+				BCFE62B81885DCF500B79DAD /* Sources */,
+				BCFE62B91885DCF500B79DAD /* Frameworks */,
+				BCFE62BA1885DCF500B79DAD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BCFE62C21885DCF500B79DAD /* PBXTargetDependency */,
+			);
+			name = MahjongEyeTests;
+			productName = MahjongEyeTests;
+			productReference = BCFE62BC1885DCF500B79DAD /* MahjongEyeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BCFE62901885DCF500B79DAD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = MJ;
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Danila Parhomenko";
+				TargetAttributes = {
+					BCFE62BB1885DCF500B79DAD = {
+						TestTargetID = BCFE62971885DCF500B79DAD;
+					};
+				};
+			};
+			buildConfigurationList = BCFE62931885DCF500B79DAD /* Build configuration list for PBXProject "MahjongEye" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BCFE628F1885DCF500B79DAD;
+			productRefGroup = BCFE62991885DCF500B79DAD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BCFE62971885DCF500B79DAD /* MahjongEye */,
+				BCFE62BB1885DCF500B79DAD /* MahjongEyeTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BCFE62961885DCF500B79DAD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCFE62B21885DCF500B79DAD /* Main_iPad.storyboard in Resources */,
+				BCFE62B71885DCF500B79DAD /* Images.xcassets in Resources */,
+				BCFE62AF1885DCF500B79DAD /* Main_iPhone.storyboard in Resources */,
+				BCFE62A61885DCF500B79DAD /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BCFE62BA1885DCF500B79DAD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCFE62C81885DCF500B79DAD /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BCFE62941885DCF500B79DAD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCFE62A81885DCF500B79DAD /* main.m in Sources */,
+				BCFE62B51885DCF500B79DAD /* MJViewController.m in Sources */,
+				BCFE62AC1885DCF500B79DAD /* MJAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BCFE62B81885DCF500B79DAD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCFE62CA1885DCF500B79DAD /* MahjongEyeTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BCFE62C21885DCF500B79DAD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BCFE62971885DCF500B79DAD /* MahjongEye */;
+			targetProxy = BCFE62C11885DCF500B79DAD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		BCFE62A41885DCF500B79DAD /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BCFE62A51885DCF500B79DAD /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		BCFE62AD1885DCF500B79DAD /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BCFE62AE1885DCF500B79DAD /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		BCFE62B01885DCF500B79DAD /* Main_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BCFE62B11885DCF500B79DAD /* Base */,
+			);
+			name = Main_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		BCFE62C61885DCF500B79DAD /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BCFE62C71885DCF500B79DAD /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BCFE62CB1885DCF500B79DAD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BCFE62CC1885DCF500B79DAD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BCFE62CE1885DCF500B79DAD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MahjongEye/MahjongEye-Prefix.pch";
+				INFOPLIST_FILE = "MahjongEye/MahjongEye-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		BCFE62CF1885DCF500B79DAD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MahjongEye/MahjongEye-Prefix.pch";
+				INFOPLIST_FILE = "MahjongEye/MahjongEye-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		BCFE62D11885DCF500B79DAD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MahjongEye.app/MahjongEye";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MahjongEye/MahjongEye-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "MahjongEyeTests/MahjongEyeTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		BCFE62D21885DCF500B79DAD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MahjongEye.app/MahjongEye";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MahjongEye/MahjongEye-Prefix.pch";
+				INFOPLIST_FILE = "MahjongEyeTests/MahjongEyeTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BCFE62931885DCF500B79DAD /* Build configuration list for PBXProject "MahjongEye" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BCFE62CB1885DCF500B79DAD /* Debug */,
+				BCFE62CC1885DCF500B79DAD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BCFE62CD1885DCF500B79DAD /* Build configuration list for PBXNativeTarget "MahjongEye" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BCFE62CE1885DCF500B79DAD /* Debug */,
+				BCFE62CF1885DCF500B79DAD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		BCFE62D01885DCF500B79DAD /* Build configuration list for PBXNativeTarget "MahjongEyeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BCFE62D11885DCF500B79DAD /* Debug */,
+				BCFE62D21885DCF500B79DAD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BCFE62901885DCF500B79DAD /* Project object */;
+}
