@@ -22,6 +22,9 @@
 		BCFE62C01885DCF500B79DAD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCFE629F1885DCF500B79DAD /* UIKit.framework */; };
 		BCFE62C81885DCF500B79DAD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BCFE62C61885DCF500B79DAD /* InfoPlist.strings */; };
 		BCFE62CA1885DCF500B79DAD /* MahjongEyeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFE62C91885DCF500B79DAD /* MahjongEyeTests.m */; };
+		BCFE62D41885DFCE00B79DAD /* trad-actual.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BCFE62D31885DFCE00B79DAD /* trad-actual.jpg */; };
+		BCFE62D71885DFE300B79DAD /* MJTileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFE62D61885DFE300B79DAD /* MJTileManager.m */; };
+		BCFE62DA1885E85500B79DAD /* MJPawnInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFE62D91885E85500B79DAD /* MJPawnInfo.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +58,11 @@
 		BCFE62C51885DCF500B79DAD /* MahjongEyeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MahjongEyeTests-Info.plist"; sourceTree = "<group>"; };
 		BCFE62C71885DCF500B79DAD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BCFE62C91885DCF500B79DAD /* MahjongEyeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MahjongEyeTests.m; sourceTree = "<group>"; };
+		BCFE62D31885DFCE00B79DAD /* trad-actual.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "trad-actual.jpg"; sourceTree = "<group>"; };
+		BCFE62D51885DFE300B79DAD /* MJTileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJTileManager.h; sourceTree = "<group>"; };
+		BCFE62D61885DFE300B79DAD /* MJTileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJTileManager.m; sourceTree = "<group>"; };
+		BCFE62D81885E85500B79DAD /* MJPawnInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPawnInfo.h; sourceTree = "<group>"; };
+		BCFE62D91885E85500B79DAD /* MJPawnInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPawnInfo.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,8 +122,13 @@
 		BCFE62A11885DCF500B79DAD /* MahjongEye */ = {
 			isa = PBXGroup;
 			children = (
+				BCFE62D31885DFCE00B79DAD /* trad-actual.jpg */,
 				BCFE62AA1885DCF500B79DAD /* MJAppDelegate.h */,
 				BCFE62AB1885DCF500B79DAD /* MJAppDelegate.m */,
+				BCFE62D51885DFE300B79DAD /* MJTileManager.h */,
+				BCFE62D61885DFE300B79DAD /* MJTileManager.m */,
+				BCFE62D81885E85500B79DAD /* MJPawnInfo.h */,
+				BCFE62D91885E85500B79DAD /* MJPawnInfo.m */,
 				BCFE62AD1885DCF500B79DAD /* Main_iPhone.storyboard */,
 				BCFE62B01885DCF500B79DAD /* Main_iPad.storyboard */,
 				BCFE62B31885DCF500B79DAD /* MJViewController.h */,
@@ -234,6 +247,7 @@
 			files = (
 				BCFE62B21885DCF500B79DAD /* Main_iPad.storyboard in Resources */,
 				BCFE62B71885DCF500B79DAD /* Images.xcassets in Resources */,
+				BCFE62D41885DFCE00B79DAD /* trad-actual.jpg in Resources */,
 				BCFE62AF1885DCF500B79DAD /* Main_iPhone.storyboard in Resources */,
 				BCFE62A61885DCF500B79DAD /* InfoPlist.strings in Resources */,
 			);
@@ -256,7 +270,9 @@
 			files = (
 				BCFE62A81885DCF500B79DAD /* main.m in Sources */,
 				BCFE62B51885DCF500B79DAD /* MJViewController.m in Sources */,
+				BCFE62D71885DFE300B79DAD /* MJTileManager.m in Sources */,
 				BCFE62AC1885DCF500B79DAD /* MJAppDelegate.m in Sources */,
+				BCFE62DA1885E85500B79DAD /* MJPawnInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

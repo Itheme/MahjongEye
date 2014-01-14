@@ -12,7 +12,57 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    NSArray *field = @[@[@"..aabbccddee..",
+                         @"ffaabbccddeegg",
+                         @"ffhhiijjkkllgg",
+                         @"..hhiijjkkll..",
+                         @"....mmnnoo....",
+                         @"....mmnnoo....",
+                         @"..ppqqrrsstt..",
+                         @"uuppqqrrssttvv",
+                         @"uuwwxxyyzzAAvv",
+                         @"..wwxxyyzzAA..",
+                         @"....BBCCDD....",
+                         @"....BBCCDD....",
+                         @"..EEFFGGHHII..",
+                         @"KKEEFFGGHHIILL",
+                         @"KKMMNNOOPPQQLL",
+                         @"..MMNNOOPPQQ.."],
+                       @[@"..............",
+                         @"..............",
+                         @"..............",
+                         @"..............",
+                         @"......RR......",
+                         @"......RR......",
+                         @"....SSTTUU....",
+                         @"....SSTTUU....",
+                         @"....VVWWXX....",
+                         @"....VVWWXX....",
+                         @"......YY......",
+                         @"......YY......",
+                         @"..............",
+                         @"..............",
+                         @"..............",
+                         @".............."]
+                       ];
+    NSArray *eye =   @[@"..............",
+                       @"..............",
+                       @"..............",
+                       @"..............",
+                       @"......11......",
+                       @"......11......",
+                       @"....112211....",
+                       @"....112211....",
+                       @"....112211....",
+                       @"....112211....",
+                       @"......11......",
+                       @"......11......",
+                       @"..............",
+                       @"..............",
+                       @"..............",
+                       @".............."];
+
+    self.tileManager = [[MJTileManager alloc] initWithTiles:[UIImage imageNamed:@"trad-actual"] Field:field Eye:eye];
     return YES;
 }
 							

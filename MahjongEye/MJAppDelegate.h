@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MJTileManager.h"
 
 @interface MJAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) MJTileManager *tileManager;
 
 @end
