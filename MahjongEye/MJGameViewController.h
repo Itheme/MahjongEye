@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "MJPawnContainer.h"
+#import "MJFieldView.h"
 
-@interface MJGameViewController : UIViewController
+@interface MJGameViewController : UIViewController <FieldDelegate>
 
 @property (nonatomic, strong, setter = setPawnContainer:) MJPawnContainer *pawns;
+
+@property (weak, nonatomic) IBOutlet MJFieldView *field;
 
 @end

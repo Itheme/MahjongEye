@@ -10,7 +10,8 @@
 #import "MJPawnInfo.h"
 
 @interface MJTileManager () {
-
+    int fieldWidth;  // in quaters of pawns
+    int fieldHeight; // in quaters of pawns
 }
 
 @property (nonatomic) CGSize tileSize;
@@ -20,6 +21,8 @@
 @end
 
 @implementation MJTileManager
+
+@synthesize fieldSize;
 
 - (void)setupTiles:(UIImage *)tiles {
     NSMutableArray *t = [[NSMutableArray alloc] init];
@@ -49,8 +52,8 @@
 - (void)setupPawnRelations:(NSArray *)eye field:(NSArray *)field {
     NSMutableArray *allPawns = [[NSMutableArray alloc] init];
     NSMutableDictionary *pawnAssociations = [[NSMutableDictionary alloc] init];
-    int fieldWidth = [((NSString *)eye[0]) length];
-    int fieldHeight = eye.count;
+    fieldWidth = [((NSString *)eye[0]) length];
+    fieldHeight = eye.count;
     __block NSString *everyLine = @"";
     [field enumerateObjectsUsingBlock:^(NSArray *map, NSUInteger level, BOOL *stop) {
         NSRange r;
@@ -148,6 +151,12 @@
         [a addObject:allPawns.lastObject];
     }
     container.slayerPawns = a;
+}
+
+- (void) setFieldSize:(CGSize)aFieldSize {
+    fieldSize = aFieldSize;
+    self.tileSize = CGSizeMake(fieldSize.width * 2.0 / fieldWidth, fieldSize.height * 2.0 / fieldHeight);
+#warning adjust tile rotation here
 }
 
 

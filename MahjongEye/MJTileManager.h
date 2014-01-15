@@ -13,6 +13,7 @@
 
 @property (nonatomic, readonly) CGSize tileSize;
 @property (nonatomic, readonly, strong) NSArray *tiles;
+@property (nonatomic, setter = setFieldSize:) CGSize fieldSize;
 
 - (id) initWithTiles:(UIImage *) tiles Field:(NSArray *)field Eye:(NSArray *)eye;
 

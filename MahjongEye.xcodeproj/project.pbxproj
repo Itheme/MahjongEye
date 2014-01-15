@@ -31,6 +31,7 @@
 		BCFE62E61885FD7000B79DAD /* MJPawnView.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFE62E51885FD7000B79DAD /* MJPawnView.m */; };
 		BCFE62E81886020800B79DAD /* back1.png in Resources */ = {isa = PBXBuildFile; fileRef = BCFE62E71886020800B79DAD /* back1.png */; };
 		BCFE62EA1886021500B79DAD /* back0.png in Resources */ = {isa = PBXBuildFile; fileRef = BCFE62E91886021500B79DAD /* back0.png */; };
+		BCFE62EE1886B01500B79DAD /* MJFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFE62ED1886B01500B79DAD /* MJFieldView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,8 @@
 		BCFE62E51885FD7000B79DAD /* MJPawnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPawnView.m; sourceTree = "<group>"; };
 		BCFE62E71886020800B79DAD /* back1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back1.png; sourceTree = "<group>"; };
 		BCFE62E91886021500B79DAD /* back0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back0.png; sourceTree = "<group>"; };
+		BCFE62EC1886B01500B79DAD /* MJFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJFieldView.h; sourceTree = "<group>"; };
+		BCFE62ED1886B01500B79DAD /* MJFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJFieldView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,13 +155,12 @@
 				BCFE62D81885E85500B79DAD /* MJPawnInfo.h */,
 				BCFE62D91885E85500B79DAD /* MJPawnInfo.m */,
 				BCFE62AD1885DCF500B79DAD /* Main_iPhone.storyboard */,
+				BCFE62EC1886B01500B79DAD /* MJFieldView.h */,
+				BCFE62ED1886B01500B79DAD /* MJFieldView.m */,
 				BCFE62B01885DCF500B79DAD /* Main_iPad.storyboard */,
 				BCFE62E41885FD7000B79DAD /* MJPawnView.h */,
 				BCFE62E51885FD7000B79DAD /* MJPawnView.m */,
-				BCFE62B31885DCF500B79DAD /* MJViewController.h */,
-				BCFE62B41885DCF500B79DAD /* MJViewController.m */,
-				BCFE62DE1885F9C900B79DAD /* MJGameViewController.h */,
-				BCFE62DF1885F9C900B79DAD /* MJGameViewController.m */,
+				BCFE62EB1886ABFF00B79DAD /* View Controllers */,
 				BCFE62B61885DCF500B79DAD /* Images.xcassets */,
 				BCFE62A21885DCF500B79DAD /* Supporting Files */,
 			);
@@ -192,6 +194,17 @@
 				BCFE62C61885DCF500B79DAD /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BCFE62EB1886ABFF00B79DAD /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				BCFE62B31885DCF500B79DAD /* MJViewController.h */,
+				BCFE62B41885DCF500B79DAD /* MJViewController.m */,
+				BCFE62DE1885F9C900B79DAD /* MJGameViewController.h */,
+				BCFE62DF1885F9C900B79DAD /* MJGameViewController.m */,
+			);
+			name = "View Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -298,6 +311,7 @@
 			files = (
 				BCFE62A81885DCF500B79DAD /* main.m in Sources */,
 				BCFE62B51885DCF500B79DAD /* MJViewController.m in Sources */,
+				BCFE62EE1886B01500B79DAD /* MJFieldView.m in Sources */,
 				BCFE62D71885DFE300B79DAD /* MJTileManager.m in Sources */,
 				BCFE62E61885FD7000B79DAD /* MJPawnView.m in Sources */,
 				BCFE62E01885F9C900B79DAD /* MJGameViewController.m in Sources */,

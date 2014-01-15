@@ -27,5 +27,6 @@ typedef enum EyeEnum {
 @property (nonatomic, readonly, getter = getCouldBePlaced) BOOL couldBePlaced;
 
 - (id) initWithCoordiante:(CGPoint) p Eye:(Eye) e Level:(NSUInteger) lev;
+- (BOOL) almostSameCoordinate:(CGPoint) p;
 
 @end

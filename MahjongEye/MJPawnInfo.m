@@ -10,6 +10,8 @@
 
 @implementation MJPawnInfo
 
+@synthesize coordinate;
+
 - (id) initWithCoordiante:(CGPoint) p Eye:(Eye) e Level:(NSUInteger) lev {
     self = [super init];
     if (self) {
@@ -35,6 +37,10 @@
     if (self.couldBePlacedIfExists)
         return self.couldBePlacedIfExists.currentPawn >= 0;
     return YES;
+}
+
+- (BOOL) almostSameCoordinate:(CGPoint) p {
+    return ((ABS(p.x - coordinate.x) < 0.5) && (ABS(p.y - coordinate.y) < 0.5));
 }
 
 @end
