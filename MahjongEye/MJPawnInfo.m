@@ -43,4 +43,22 @@
     return ((ABS(p.x - coordinate.x) < 0.5) && (ABS(p.y - coordinate.y) < 0.5));
 }
 
+- (BOOL) currentEquals:(MJPawnInfo *)p {
+    if (p) {
+        int p0 = self.currentPawn;
+        int p1 = p.currentPawn;
+        return (p0 >> 2) == (p1 >> 2);
+    }
+    return NO;
+}
+
+- (BOOL) currentEqualsNumber:(NSNumber *)n {
+    if (n) {
+        int p0 = self.currentPawn;
+        int p1 = n.intValue;
+        return (p0 >> 2) == (p1 >> 2);
+    }
+    return NO;
+}
+
 @end

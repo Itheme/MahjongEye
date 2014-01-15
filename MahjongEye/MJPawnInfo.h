@@ -28,5 +28,7 @@ typedef enum EyeEnum {
 
 - (id) initWithCoordiante:(CGPoint) p Eye:(Eye) e Level:(NSUInteger) lev;
 - (BOOL) almostSameCoordinate:(CGPoint) p;
+- (BOOL) currentEquals:(MJPawnInfo *)p;
+- (BOOL) currentEqualsNumber:(NSNumber *)n;
 
 @end

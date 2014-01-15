@@ -12,8 +12,8 @@
 
 @property (nonatomic, strong) NSArray *pawnsOnField; // MJPawnInfos
 // numbers
-@property (nonatomic, strong) NSArray *pawnsToDraw;
-@property (nonatomic, strong) NSArray *slayerPawns;
-@property (nonatomic, strong) NSArray *dragonPawns;
+@property (nonatomic, strong) NSMutableArray *pawnsToDraw;
+@property (nonatomic, strong) NSMutableArray *slayerPawns;
+@property (nonatomic, strong) NSMutableArray *dragonPawns;
 
 @end

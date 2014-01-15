@@ -8,17 +8,35 @@
 
 #import "MJPawnView.h"
 
+@interface MJPawnView ()
+
+@property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
+
+@end
+
 @implementation MJPawnView
 
-- (id)initWithFrame:(CGRect)frame Tile:(UIImage *)image HLImage:(UIImage *)hlImage
+- (void) setupWithTile:(UIImage *)image HLImage:(UIImage *)hlImage Hand:(BOOL)inHand Delegate:(id<PawnViewMaster>) master
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.userInteractionEnabled = YES;
-        self.image = image;
-        self.highlightedImage = hlImage;
+    self.userInteractionEnabled = YES;
+    self.image = image;
+    self.highlightedImage = hlImage;
+    self.delegate = master;
+    if (inHand) {
+        if (master) {
+            self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTapped:)];
+            self.tapGesture.numberOfTapsRequired = 1;
+            self.tapGesture.numberOfTouchesRequired = 1;
+            self.slayer = YES;
+            self.tapGesture.enabled = YES;
+            [self addGestureRecognizer:self.tapGesture];
+        } else
+            self.dragon = YES;
     }
-    return self;
+}
+
+- (void) userTapped:(id)tapInfo {
+    [self.delegate userTapped:self];
 }
 
 /*
@@ -29,5 +47,32 @@
     // Drawing code
 }
 */
+
+// field pawn views
+- (id)initWithFrame:(CGRect)frame Tile:(UIImage *)image HLImage:(UIImage *)hlImage {
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setupWithTile:image HLImage:hlImage Hand:NO Delegate:nil];
+    }
+    return self;
+}
+
+// hand pawn views
+- (id)initWithFrame:(CGRect)frame Tile:(UIImage *)image HLImage:(UIImage *)hlImage Delegate:(id<PawnViewMaster>)master {
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setupWithTile:image HLImage:hlImage Hand:YES Delegate:master];
+    }
+    return self;
+}
+
+// dragon pawn views
+- (id)initDragonPawnWithFrame:(CGRect)frame Tile:(UIImage *)image HLImage:(UIImage *)hlImage {
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setupWithTile:image HLImage:hlImage Hand:YES Delegate:nil];
+    }
+    return self;
+}
 
 @end

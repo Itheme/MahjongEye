@@ -151,6 +151,14 @@
         [a addObject:allPawns.lastObject];
     }
     container.slayerPawns = a;
+    container.pawnsToDraw = allPawns;
+}
+
+- (void) userDraw:(MJPawnContainer *) container {
+    if (container.pawnsToDraw.count > 0) {
+        [container.slayerPawns addObject:[container.pawnsToDraw lastObject]];
+        [container.pawnsToDraw removeLastObject];
+    }
 }
 
 - (void) setFieldSize:(CGSize)aFieldSize {

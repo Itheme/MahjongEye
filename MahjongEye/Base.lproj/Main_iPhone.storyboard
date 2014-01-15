@@ -45,15 +45,59 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Trq-Lo-mXh" customClass="MJFieldView">
-                                <rect key="frame" x="0.0" y="44" width="320" height="364"/>
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Trq-Lo-mXh" customClass="MJFieldView">
+                                <rect key="frame" x="0.0" y="60" width="257" height="439"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Emu-fs-RGd">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="S3o-3L-xzA"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem title="Back" id="TcW-fQ-PvB"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="8ij-7u-Pi2"/>
+                                    <barButtonItem title="Done" id="7Ic-nw-75w">
+                                        <connections>
+                                            <action selector="doneButtonTouched:" destination="aXk-hk-Rb8" id="snU-Ia-o7o"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dG6-Bv-j1f">
+                                <rect key="frame" x="260" y="500" width="60" height="68"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="68" id="cnQ-NP-HJo"/>
+                                    <constraint firstAttribute="width" constant="60" id="wnp-k3-IGX"/>
+                                </constraints>
+                                <state key="normal" title="Draw">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="drawButtonTouched:" destination="aXk-hk-Rb8" eventType="touchUpInside" id="DwH-KV-VUJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Trq-Lo-mXh" firstAttribute="leading" secondItem="QJQ-zx-P3a" secondAttribute="leading" id="0HS-qM-sIH"/>
+                            <constraint firstItem="QN3-hA-aCo" firstAttribute="top" secondItem="dG6-Bv-j1f" secondAttribute="bottom" id="5VU-lY-H3a"/>
+                            <constraint firstAttribute="trailing" secondItem="dG6-Bv-j1f" secondAttribute="trailing" id="BUS-dg-nxB"/>
+                            <constraint firstItem="Emu-fs-RGd" firstAttribute="top" secondItem="QJQ-zx-P3a" secondAttribute="top" id="KJf-BJ-ZQx"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Trq-Lo-mXh" secondAttribute="trailing" priority="994" constant="40" id="Nh7-mO-AHy"/>
+                            <constraint firstItem="Emu-fs-RGd" firstAttribute="leading" secondItem="QJQ-zx-P3a" secondAttribute="leading" id="cga-Q8-q8a"/>
+                            <constraint firstItem="Trq-Lo-mXh" firstAttribute="top" secondItem="Emu-fs-RGd" secondAttribute="bottom" id="eGn-DI-7DB"/>
+                            <constraint firstItem="Trq-Lo-mXh" firstAttribute="leading" secondItem="QJQ-zx-P3a" secondAttribute="leading" id="ed5-6e-7me"/>
+                            <constraint firstAttribute="trailing" secondItem="Emu-fs-RGd" secondAttribute="trailing" id="qDg-XG-cLl"/>
+                            <constraint firstItem="QN3-hA-aCo" firstAttribute="top" secondItem="Trq-Lo-mXh" secondAttribute="bottom" constant="60" id="xXE-hi-P2R"/>
+                        </constraints>
                     </view>
                     <connections>
+                        <outlet property="doneButton" destination="7Ic-nw-75w" id="bJo-wL-v1N"/>
+                        <outlet property="drawButton" destination="dG6-Bv-j1f" id="wUS-SH-ZJc"/>
                         <outlet property="field" destination="Trq-Lo-mXh" id="BCI-XD-sfR"/>
                     </connections>
                 </viewController>

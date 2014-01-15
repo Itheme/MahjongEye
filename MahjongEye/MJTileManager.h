@@ -18,5 +18,6 @@
 - (id) initWithTiles:(UIImage *) tiles Field:(NSArray *)field Eye:(NSArray *)eye;
 
 - (void) fillPawnContainer:(MJPawnContainer *) container;
+- (void) userDraw:(MJPawnContainer *) container;
 
 @end
