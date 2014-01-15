@@ -19,5 +19,7 @@
 
 - (void) fillPawnContainer:(MJPawnContainer *) container;
 - (void) userDraw:(MJPawnContainer *) container;
+- (void) dragonDraws:(MJPawnContainer *) container;
+- (void) fillUserHand:(MJPawnContainer *) container;
 
 @end

@@ -31,6 +31,12 @@ typedef enum HighlightedStateEnum {
     hlHandSelectedFieldHL = 5,
 } HighlightedState;
 
+typedef enum PawnAvailabilityEnum {
+    aToPut = 1,
+    aToPeek = 2,
+    aToPutOrPeek = 3
+} PawnAvailability;
+
 @interface MJGameViewController () {
     CGSize handScale;
 }
@@ -45,18 +51,20 @@ typedef enum HighlightedStateEnum {
 @property (nonatomic, strong) UIImage *suiteImage0;
 @property (nonatomic, strong) UIImage *suiteImage1;
 @property (nonatomic, setter = setState:) GameState state;
-@property (nonatomic) HighlightedState highlighState;
+@property (nonatomic, setter = setHighlightState:) HighlightedState highlighState;
 
 @property (nonatomic, strong) NSNumber *hlHandPawn;
-@property (nonatomic, strong) MJPawnInfo *hlFieldPawn0;
-@property (nonatomic, strong) MJPawnInfo *hlFieldPawn1;
+@property (nonatomic, strong) NSArray *hlFieldPawns0; // MJPawnInfo
+@property (nonatomic, strong) NSArray *hlFieldPawns1; // MJPawnInfo
+
+@property (nonatomic, strong) NSNumber *hlDragonPawn;
 
 @end
 
 @implementation MJGameViewController
 
 @synthesize pawns;
-@synthesize state;
+@synthesize state, highlighState;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -104,9 +112,6 @@ typedef enum HighlightedStateEnum {
     self.hlViewHand.hidden = NO;
     self.hlViewHand.alpha = 0.5;
     self.hlViewHand.backgroundColor = [UIColor yellowColor];
-    
-    self.hlViewHand = [[UIView alloc] initWithFrame:CGRectMake(0, 0, handScale.width, handScale.height)];
-    self.hlViewHand.alpha = 0.5;
 }
 
 - (void)didReceiveMemoryWarning
@@ -117,7 +122,14 @@ typedef enum HighlightedStateEnum {
 
 - (CGRect) pawnRectBy:(MJPawnInfo *)p {
     CGSize fs = self.manager.tileSize;
-    return CGRectMake(p.coordinate.x * fs.width, p.coordinate.y * fs.height, fs.width, fs.height);
+    CGPoint topLeft = p.coordinate;
+    topLeft.x *= fs.width;
+    topLeft.y *= fs.height;
+    if (p.level > 0) {
+        topLeft.x -= 4;
+        topLeft.y -= 4;
+    }
+    return CGRectMake(topLeft.x, topLeft.y, fs.width, fs.height);
 }
 
 - (void) addPawnViewFor:(MJPawnInfo *)p {
@@ -154,26 +166,158 @@ typedef enum HighlightedStateEnum {
 }
 
 - (void) doAI {
-    §
+    MJPawnInfo *target = nil;
+    // do we need to cover the eye?
+    for (MJPawnInfo *p in pawns.pawnsOnField)
+        if ((p.eye > eField) && (p.currentPawn < 0)) {
+            if (target) {
+                if (target.eye < p.eye) {
+                    target = p;
+                    break;
+                }
+            } else
+                target = p;
+        }
+    // Now just stupid pawns putting
+    if (target == nil) {
+        while (true) {
+            int i = 1.0*pawns.pawnsOnField.count*rand()/RAND_MAX;
+            MJPawnInfo *p = pawns.pawnsOnField[i];
+            if ((p.currentPawn < 0) && (p.couldBePlaced)) {
+                target = p;
+                break;
+            }
+        }
+    }
+    self.hlDragonPawn = nil;
+    // Now just stupid pawns fetching
+    if (pawns.dragonPawns.count > 0) {
+        self.hlDragonPawn = pawns.dragonPawns.lastObject;
+    }
+    [self performSelectorOnMainThread:@selector(dragonPuts:) withObject:target waitUntilDone:YES];
+}
+
+- (BOOL) checkGameIsNotOver {
+#warning UNDONE
+    return YES;
 }
 
 - (void)setState:(GameState)aState {
+    if (state == aState) return;
     state = aState;
     self.doneButton.enabled = aState == sPlayerTurnCouldProceed;
-    if (aState == sDragonTurn)
-        [self performSelectorInBackground:@selector(doAI) withObject:nil];
+    if (aState == sDragonTurn) {
+        if ([self checkGameIsNotOver])
+            [self performSelectorInBackground:@selector(doAI) withObject:nil];
+    } else {
+        if (aState == sPlayerTurnShouldPlacePawn) {
+            [self.manager fillUserHand:pawns];
+            [self rearrangeHand];
+            [self checkGameIsNotOver];
+        }
+    }
 }
 
-- (MJPawnInfo *) pawnInP:(CGPoint) p Rect:(CGRect *)r{
+- (void) setHighlightState:(HighlightedState)aHighlighState {
+    if (aHighlighState == highlighState) return;
+    highlighState = aHighlighState;
+    switch (aHighlighState) {
+        case hlNone:
+            [self.hlViewHand removeFromSuperview];
+            [self.hlViewField0 removeFromSuperview];
+            [self.hlViewField1 removeFromSuperview];
+            break;
+        case hlFieldHL:
+        case hlFieldSelected:
+            [self.hlViewField1 removeFromSuperview];
+        case hlFieldSelectedFieldHL:
+            [self.hlViewHand removeFromSuperview];
+            break;
+        case hlHandSelected:
+            [self.hlViewField0 removeFromSuperview];
+        case hlHandSelectedFieldHL:
+            [self.hlViewField1 removeFromSuperview];
+            break;
+    }
+}
+
+- (MJPawnInfo *) chooseBestPawnOf:(MJPawnInfo *)p0 P1:(MJPawnInfo *)p1 For:(PawnAvailability) available {
+    if (available == aToPutOrPeek) {
+        MJPawnInfo *p = [self chooseBestPawnOf:p0 P1:p1 For:aToPeek];
+        if (p)
+            return p;
+        return [self chooseBestPawnOf:p0 P1:p1 For:aToPut];
+    }
+    if (p0) {
+        if (p1) {
+            if (available == aToPeek) {
+                if (p1.currentPawn >= 0) {
+                    if (p1.blocked)
+                        return nil;
+                    return p1;
+                }
+                return [self chooseBestPawnOf:p0 P1:nil For:available];
+            } else {
+                if (p1.currentPawn >= 0)
+                    return nil;
+                if (p0.currentPawn >= 0)
+                    return p1;
+                return p0;
+            }
+        } else {
+            if (available == aToPeek) {
+                if (p0.currentPawn >= 0) {
+                    if (p0.blocked)
+                        return nil;
+                    return p0;
+                }
+                return nil;
+            } else {
+                if (p0.currentPawn >= 0)
+                    return nil;
+                return p0;
+            }
+        }
+    } else {
+        if (p1)
+            return [self chooseBestPawnOf:p1 P1:nil For:available];
+        return nil;
+    }
+}
+
+- (NSArray *) pawnsInP:(CGPoint) p Rect:(CGRect *)r Available:(PawnAvailability) available {
+#warning ADD MULTILEVEL PARAMS!
+#warning ADD MULTILEVEL PARAMS!!
+#warning ADD MULTILEVEL PARAMS!!!
+#warning ADD MULTILEVEL PARAMS!!!!
     CGSize ts = self.manager.tileSize;
     p.x /= ts.width;
     p.y /= ts.height;
     p.x -= 0.5;
     p.y -= 0.5;
+    MJPawnInfo *p0 = nil;
+    MJPawnInfo *p1 = nil;
     for (MJPawnInfo *pawn in self.pawns.pawnsOnField) {
         if ([pawn almostSameCoordinate:p]) {
-            *r = CGRectMake(pawn.coordinate.x * ts.width, pawn.coordinate.y * ts.height, ts.width, ts.height);
-            return pawn;
+            if (p0) {
+                p1 = pawn;
+                break;
+            } else
+                p0 = pawn;
+        }
+    }
+    if ((p0 && p1) && (p0.level > p1.level)) {
+        MJPawnInfo *px = p0;
+        p0 = p1;
+        p1 = px;
+    }
+    MJPawnInfo *best = [self chooseBestPawnOf:p0 P1:p1 For:available];
+    if (best) {
+        *r = CGRectMake(best.coordinate.x * ts.width, best.coordinate.y * ts.height, ts.width, ts.height);
+        if (p0) {
+            if (p1)
+                return @[p0, p1];
+            return @[p0];
         }
     }
     return nil;
@@ -229,6 +373,28 @@ typedef enum HighlightedStateEnum {
     return nil;
 }
 
+- (MJPawnView *)pawnViewByPawnArray:(NSArray *)pawnsArray { //  Topmost one!
+    MJPawnView *res = [self pawnViewByPawn:pawnsArray.lastObject];
+    if (res)
+        return res;
+    return [self pawnViewByPawn:pawnsArray.firstObject];
+}
+
+- (MJPawnInfo *)emptyPawnIn:(NSArray *)pawnsArray {
+    for (MJPawnInfo *p in pawnsArray)
+        if (p.currentPawn < 0)
+            return p;
+    return nil;
+}
+
+- (MJPawnInfo *)selectablePawnIn:(NSArray *)pawnsArray {
+    for (MJPawnInfo *p in pawnsArray) {
+        if ((p.currentPawn >= 0) && (!p.blocked))
+            return p;
+    }
+    return nil;
+}
+
 - (MJPawnView *)pawnViewByHandIndex:(NSNumber *)n {
     for (MJPawnView *v in self.pawnViews) {
         if (v.handPawn && [v.handPawn isEqualToNumber:n])
@@ -268,17 +434,20 @@ typedef enum HighlightedStateEnum {
     self.state = sPlayerTurnWaitingForAnimation;
     MJPawnView *v0;
     MJPawnView *v1;
-    if (self.hlFieldPawn0) {
-        v0 = [self pawnViewByPawn:self.hlFieldPawn0];
+    if (self.hlFieldPawns0) {
+        v0 = [self pawnViewByPawn:[self selectablePawnIn:self.hlFieldPawns0]];
         [self removeFieldHL:0];
-        if (self.hlFieldPawn1) {
-            v1 = [self pawnViewByPawn:self.hlFieldPawn1];
-            [self removeFieldHL:1];
-        } else {
+        if ((self.highlighState & hlHandSelected) != 0) {
             v1 = [self pawnViewByHandIndex:self.hlHandPawn];
             [self removeHandHL];
+        } else {
+            v1 = [self pawnViewByPawn:[self selectablePawnIn:self.hlFieldPawns1]];
+            [self removeFieldHL:1];
         }
-        if (!v1) return;
+        if (!v1 || !v0) {
+            self.state = upcomingState;
+            return;
+        }
         [UIView animateWithDuration:0.4 animations:^{
             v0.alpha = 0;
             v1.alpha = 0;
@@ -306,13 +475,14 @@ typedef enum HighlightedStateEnum {
 - (void) putSelected {
     __block GameState upcomingState = self.state;
     self.state = sPlayerTurnWaitingForAnimation;
-    if (self.hlFieldPawn0 && (self.hlFieldPawn0.currentPawn < 0) && self.hlHandPawn) {
+    MJPawnInfo *placeOnField = [self emptyPawnIn:self.hlFieldPawns0];
+    if (placeOnField && self.hlHandPawn) {
         MJPawnView *v = [self pawnViewByHandIndex:self.hlHandPawn];
-        v.info = self.hlFieldPawn0;
+        v.info = placeOnField;
         v.info.currentPawn = self.hlHandPawn.intValue;
         v.handPawn = nil;
         [pawns.slayerPawns removeObject:self.hlHandPawn];
-        CGRect target2 = [self pawnRectBy:self.hlFieldPawn0];
+        CGRect target2 = [self pawnRectBy:placeOnField];
         CGRect target1 = CGRectOffset(target2, self.field.frame.origin.x, self.field.frame.origin.y);
         v.delegate = nil;
         v.handPawn = NO;
@@ -334,6 +504,30 @@ typedef enum HighlightedStateEnum {
     } else
         self.state = upcomingState;
 }
+
+- (void) dragonPuts:(MJPawnInfo *)p {
+    self.state = sPlayerTurnWaitingForAnimation;
+    if (self.hlDragonPawn && (p.currentPawn < 0)) {
+        p.currentPawn = self.hlDragonPawn.intValue;
+        [self addPawnViewFor:p];
+        MJPawnView *v = [self pawnViewByPawn:p];
+        [pawns.dragonPawns removeObject:self.hlDragonPawn];
+        [self.manager dragonDraws:pawns];
+        CGRect target = [self pawnRectBy:p];
+        [UIView animateWithDuration:0.4 animations:^{
+            v.frame = target;
+        } completion:^(BOOL finished) {
+            [self updateTable];
+            self.state = sPlayerTurnShouldPlacePawn;
+            self.highlighState = hlNone;
+        }];
+        //self.hlFieldPawn0.currentPawn = self.hlHandPawn.intValue;
+        //[self addPawnViewFor:self.hlFieldPawn0];
+        //self.hlFieldPawn0 = nil;
+    } else
+        self.state = sPlayerTurnShouldPlacePawn;
+}
+
 #pragma mark - FieldDelegate methods
 
 - (void) tryHLiteAtPoint:(CGPoint) p {
@@ -344,34 +538,39 @@ typedef enum HighlightedStateEnum {
             break;
         case sPlayerTurnCouldProceed:
         case sPlayerTurnShouldPlacePawn: {
+            PawnAvailability a;
+            if (self.state == sPlayerTurnShouldPlacePawn)
+                a = aToPutOrPeek;
+            else
+                a = aToPeek;
             switch (self.highlighState) {
                 case hlNone:
                 case hlHandSelected:
-                    self.hlFieldPawn0 = [self pawnInP:p Rect:&r];
-                    if (self.hlFieldPawn0) {
+                    self.hlFieldPawns0 = [self pawnsInP:p Rect:&r Available:a];
+                    if (self.hlFieldPawns0) {
                         [self addFieldHL:0 Rect:r];
                         self.highlighState |= hlFieldHL;
                     }
                     break;
                 case hlHandSelectedFieldHL:
                 case hlFieldHL:
-                    self.hlFieldPawn0 = [self pawnInP:p Rect:&r];
-                    if (self.hlFieldPawn0) {
+                    self.hlFieldPawns0 = [self pawnsInP:p Rect:&r Available:a];
+                    if (self.hlFieldPawns0) {
                         self.hlViewField0.frame = r;
                     } else {
                         [self removeFieldHL:0];
                     }
                     break;
                 case hlFieldSelected:
-                    self.hlFieldPawn1 = [self pawnInP:p Rect:&r];
-                    if (self.hlFieldPawn1) {
+                    self.hlFieldPawns1 = [self pawnsInP:p Rect:&r Available:a];
+                    if (self.hlFieldPawns1) {
                         [self addFieldHL:1 Rect:r];
                         self.highlighState = hlFieldSelectedFieldHL;
                     }
                     break;
                 case hlFieldSelectedFieldHL:
-                    self.hlFieldPawn1 = [self pawnInP:p Rect:&r];
-                    if (self.hlFieldPawn1) {
+                    self.hlFieldPawns1 = [self pawnsInP:p Rect:&r Available:a];
+                    if (self.hlFieldPawns1) {
                         self.hlViewField1.frame = r;
                     } else {
                         [self removeFieldHL:1];
@@ -395,49 +594,63 @@ typedef enum HighlightedStateEnum {
                 case hlFieldSelected:
                 case hlHandSelected:
                     break;
-                case hlHandSelectedFieldHL:
                 case hlFieldHL:
-                    if (self.hlFieldPawn0) {
-                        if ((self.hlFieldPawn0.currentPawn < 0) || (self.hlFieldPawn0.blocked)) { // empty or blocked field could not be selected
-                            if (self.highlighState == hlHandSelectedFieldHL) { //
-                                if (self.hlFieldPawn0.currentPawn < 0) {
-                                    if (self.state == sPlayerTurnShouldPlacePawn) {
-                                        [self putSelected];
-                                        break;
-                                    }
-                                }
-                            }
-                            [self removeFieldHL:0];
-                            self.hlFieldPawn0 = nil;
-                        } else {
+                case hlHandSelectedFieldHL:
+                    if (self.hlFieldPawns0) {
+                        MJPawnInfo *selectable = [self selectablePawnIn:self.hlFieldPawns0];
+                        if (selectable) {
                             if (self.highlighState == hlFieldHL)
                                 self.highlighState = hlFieldSelected;
                             else {
-                                if ([self.hlFieldPawn0 currentEqualsNumber:self.hlHandPawn]) // valid pair
+                                if ([selectable currentEqualsNumber:self.hlHandPawn]) // valid pait
                                     [self removeSelected];
                                 else {
                                     [self removeHandHL];
                                     self.highlighState = hlFieldSelected;
                                 }
                             }
+                        } else {
+                            if (self.highlighState == hlHandSelectedFieldHL) {
+                                MJPawnInfo *empty = [self emptyPawnIn:self.hlFieldPawns0];
+                                if (empty) { // we could put here from hand
+                                    [self putSelected];
+                                    break;
+                                } else {
+                                    [self removeFieldHL:0];
+                                    self.highlighState = hlHandSelected;
+                                }
+                            } else
+                                self.highlighState = hlNone;
                         }
                     } else
                         NSLog(@"Invalid UI state!");
                     break;
                 case hlFieldSelectedFieldHL:
-                    if (self.hlFieldPawn1) {
-                        if ((self.hlFieldPawn1.currentPawn < 0) || (self.hlFieldPawn1.blocked)) { // empty pawn
-                            [self removeFieldHL:1];
-                            self.hlFieldPawn1 = nil;
-                        } else {
-                            if ([self.hlFieldPawn0 currentEquals:self.hlFieldPawn1]) // valid pair
-                                [self removeSelected];
-                            else { // switching hlFieldPawn0 onto hlFieldPawn1
-                                self.hlViewField0.frame = self.hlViewField1.frame;
-                                self.hlFieldPawn0 = self.hlFieldPawn1;
-                                self.hlFieldPawn1 = nil;
+                    if (self.hlFieldPawns1) {
+                        MJPawnInfo *selectable0 = [self selectablePawnIn:self.hlFieldPawns0];
+                        MJPawnInfo *selectable1 = [self selectablePawnIn:self.hlFieldPawns1];
+                        if (selectable0) {
+                            if (selectable1) {
+                                if ([selectable0 currentEquals:selectable1] && (![selectable0 isEqual:selectable1])) { // valid pair
+                                    [self removeSelected];
+                                    self.highlighState = hlNone;
+                                } else { // switching hlFieldPawns0 onto hlFieldPawns1
+                                    self.hlViewField0.frame = self.hlViewField1.frame;
+                                    self.hlFieldPawns0 = self.hlFieldPawns1;
+                                    self.hlFieldPawns1 = nil;
+                                    [self removeFieldHL:1];
+                                }
+                            } else {
                                 [self removeFieldHL:1];
                             }
+                        } else {
+                            if (selectable1) {
+                                self.hlViewField0.frame = self.hlViewField1.frame;
+                                self.hlFieldPawns0 = self.hlFieldPawns1;
+                                self.hlFieldPawns1 = nil;
+                                [self removeFieldHL:1];
+                            } else
+                                self.highlighState = hlNone;
                         }
                     } else
                         NSLog(@"Invalid UI state!");
@@ -461,13 +674,13 @@ typedef enum HighlightedStateEnum {
                     break;
                 case hlFieldHL:
                 case hlHandSelectedFieldHL:
-                    self.hlFieldPawn0 = nil;
+                    self.hlFieldPawns0 = nil;
                     [self removeFieldHL:0];
                     break;
                 case hlFieldSelected:
                     break;
                 case hlFieldSelectedFieldHL:
-                    self.hlFieldPawn1 = nil;
+                    self.hlFieldPawns1 = nil;
                     [self removeFieldHL:1];
                     break;
             }
@@ -497,17 +710,19 @@ typedef enum HighlightedStateEnum {
                     self.hlHandPawn = v.handPawn;
                     self.highlighState = hlHandSelectedFieldHL;
                     break;
-                case hlFieldSelected:
+                case hlFieldSelected: {
                     [self addHandHL:v];
                     self.hlHandPawn = v.handPawn;
-                    if ([self.hlFieldPawn0 currentEqualsNumber:self.hlHandPawn]) // valid pair
+                    MJPawnInfo *selectable = [self selectablePawnIn:self.hlFieldPawns0];
+                    if (selectable && [selectable currentEqualsNumber:self.hlHandPawn]) // valid pair
                         [self removeSelected];
                     else {
-                        self.hlFieldPawn0 = nil;
+                        self.hlFieldPawns0 = nil;
                         [self removeFieldHL:0];
                         self.highlighState = hlHandSelected;
                     }
                     break;
+                }
                 case hlFieldSelectedFieldHL:
                     break;
                 case hlHandSelectedFieldHL:
@@ -528,8 +743,9 @@ typedef enum HighlightedStateEnum {
 }
 
 - (IBAction)doneButtonTouched:(id)sender {
-    if (self.state == sPlayerTurnCouldProceed)
+    if (self.state == sPlayerTurnCouldProceed) {
         self.state = sDragonTurn;
+    }
 }
 
 @end

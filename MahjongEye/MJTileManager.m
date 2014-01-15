@@ -161,6 +161,19 @@
     }
 }
 
+- (void) dragonDraws:(MJPawnContainer *) container {
+    if (container.pawnsToDraw.count > 0) {
+        [container.dragonPawns addObject:[container.pawnsToDraw lastObject]];
+        [container.pawnsToDraw removeLastObject];
+    }
+}
+
+- (void) fillUserHand:(MJPawnContainer *) container {
+    while ((container.pawnsToDraw.count > 0) && (container.slayerPawns.count < 6))
+        [self userDraw:container];
+
+}
+
 - (void) setFieldSize:(CGSize)aFieldSize {
     fieldSize = aFieldSize;
     self.tileSize = CGSizeMake(fieldSize.width * 2.0 / fieldWidth, fieldSize.height * 2.0 / fieldHeight);
