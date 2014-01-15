@@ -62,7 +62,7 @@
                        @"..............",
                        @".............."];
 
-    self.tileManager = [[MJTileManager alloc] initWithTiles:[UIImage imageNamed:@"trad-actual"] Field:field Eye:eye];
+    self.tileManager = [[MJTileManager alloc] initWithTiles:[UIImage imageNamed:@"tradactual.jpg"] Field:field Eye:eye];
     return YES;
 }
 							

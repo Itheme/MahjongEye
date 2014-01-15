@@ -22,9 +22,15 @@
 		BCFE62C01885DCF500B79DAD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCFE629F1885DCF500B79DAD /* UIKit.framework */; };
 		BCFE62C81885DCF500B79DAD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BCFE62C61885DCF500B79DAD /* InfoPlist.strings */; };
 		BCFE62CA1885DCF500B79DAD /* MahjongEyeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFE62C91885DCF500B79DAD /* MahjongEyeTests.m */; };
-		BCFE62D41885DFCE00B79DAD /* trad-actual.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BCFE62D31885DFCE00B79DAD /* trad-actual.jpg */; };
+		BCFE62D41885DFCE00B79DAD /* tradactual.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BCFE62D31885DFCE00B79DAD /* tradactual.jpg */; };
 		BCFE62D71885DFE300B79DAD /* MJTileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFE62D61885DFE300B79DAD /* MJTileManager.m */; };
 		BCFE62DA1885E85500B79DAD /* MJPawnInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFE62D91885E85500B79DAD /* MJPawnInfo.m */; };
+		BCFE62DD1885F96800B79DAD /* MJGame.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFE62DC1885F96800B79DAD /* MJGame.m */; };
+		BCFE62E01885F9C900B79DAD /* MJGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFE62DF1885F9C900B79DAD /* MJGameViewController.m */; };
+		BCFE62E31885FA7F00B79DAD /* MJPawnContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFE62E21885FA7F00B79DAD /* MJPawnContainer.m */; };
+		BCFE62E61885FD7000B79DAD /* MJPawnView.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFE62E51885FD7000B79DAD /* MJPawnView.m */; };
+		BCFE62E81886020800B79DAD /* back1.png in Resources */ = {isa = PBXBuildFile; fileRef = BCFE62E71886020800B79DAD /* back1.png */; };
+		BCFE62EA1886021500B79DAD /* back0.png in Resources */ = {isa = PBXBuildFile; fileRef = BCFE62E91886021500B79DAD /* back0.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,11 +64,21 @@
 		BCFE62C51885DCF500B79DAD /* MahjongEyeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MahjongEyeTests-Info.plist"; sourceTree = "<group>"; };
 		BCFE62C71885DCF500B79DAD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BCFE62C91885DCF500B79DAD /* MahjongEyeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MahjongEyeTests.m; sourceTree = "<group>"; };
-		BCFE62D31885DFCE00B79DAD /* trad-actual.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "trad-actual.jpg"; sourceTree = "<group>"; };
+		BCFE62D31885DFCE00B79DAD /* tradactual.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tradactual.jpg; sourceTree = "<group>"; };
 		BCFE62D51885DFE300B79DAD /* MJTileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJTileManager.h; sourceTree = "<group>"; };
 		BCFE62D61885DFE300B79DAD /* MJTileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJTileManager.m; sourceTree = "<group>"; };
 		BCFE62D81885E85500B79DAD /* MJPawnInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPawnInfo.h; sourceTree = "<group>"; };
 		BCFE62D91885E85500B79DAD /* MJPawnInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPawnInfo.m; sourceTree = "<group>"; };
+		BCFE62DB1885F96800B79DAD /* MJGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJGame.h; sourceTree = "<group>"; };
+		BCFE62DC1885F96800B79DAD /* MJGame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJGame.m; sourceTree = "<group>"; };
+		BCFE62DE1885F9C900B79DAD /* MJGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJGameViewController.h; sourceTree = "<group>"; };
+		BCFE62DF1885F9C900B79DAD /* MJGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJGameViewController.m; sourceTree = "<group>"; };
+		BCFE62E11885FA7F00B79DAD /* MJPawnContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPawnContainer.h; sourceTree = "<group>"; };
+		BCFE62E21885FA7F00B79DAD /* MJPawnContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPawnContainer.m; sourceTree = "<group>"; };
+		BCFE62E41885FD7000B79DAD /* MJPawnView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPawnView.h; sourceTree = "<group>"; };
+		BCFE62E51885FD7000B79DAD /* MJPawnView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPawnView.m; sourceTree = "<group>"; };
+		BCFE62E71886020800B79DAD /* back1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back1.png; sourceTree = "<group>"; };
+		BCFE62E91886021500B79DAD /* back0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back0.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,17 +138,27 @@
 		BCFE62A11885DCF500B79DAD /* MahjongEye */ = {
 			isa = PBXGroup;
 			children = (
-				BCFE62D31885DFCE00B79DAD /* trad-actual.jpg */,
+				BCFE62E91886021500B79DAD /* back0.png */,
+				BCFE62E71886020800B79DAD /* back1.png */,
+				BCFE62D31885DFCE00B79DAD /* tradactual.jpg */,
 				BCFE62AA1885DCF500B79DAD /* MJAppDelegate.h */,
 				BCFE62AB1885DCF500B79DAD /* MJAppDelegate.m */,
 				BCFE62D51885DFE300B79DAD /* MJTileManager.h */,
 				BCFE62D61885DFE300B79DAD /* MJTileManager.m */,
+				BCFE62E11885FA7F00B79DAD /* MJPawnContainer.h */,
+				BCFE62E21885FA7F00B79DAD /* MJPawnContainer.m */,
+				BCFE62DB1885F96800B79DAD /* MJGame.h */,
+				BCFE62DC1885F96800B79DAD /* MJGame.m */,
 				BCFE62D81885E85500B79DAD /* MJPawnInfo.h */,
 				BCFE62D91885E85500B79DAD /* MJPawnInfo.m */,
 				BCFE62AD1885DCF500B79DAD /* Main_iPhone.storyboard */,
 				BCFE62B01885DCF500B79DAD /* Main_iPad.storyboard */,
+				BCFE62E41885FD7000B79DAD /* MJPawnView.h */,
+				BCFE62E51885FD7000B79DAD /* MJPawnView.m */,
 				BCFE62B31885DCF500B79DAD /* MJViewController.h */,
 				BCFE62B41885DCF500B79DAD /* MJViewController.m */,
+				BCFE62DE1885F9C900B79DAD /* MJGameViewController.h */,
+				BCFE62DF1885F9C900B79DAD /* MJGameViewController.m */,
 				BCFE62B61885DCF500B79DAD /* Images.xcassets */,
 				BCFE62A21885DCF500B79DAD /* Supporting Files */,
 			);
@@ -246,8 +272,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				BCFE62B21885DCF500B79DAD /* Main_iPad.storyboard in Resources */,
+				BCFE62E81886020800B79DAD /* back1.png in Resources */,
 				BCFE62B71885DCF500B79DAD /* Images.xcassets in Resources */,
-				BCFE62D41885DFCE00B79DAD /* trad-actual.jpg in Resources */,
+				BCFE62EA1886021500B79DAD /* back0.png in Resources */,
+				BCFE62D41885DFCE00B79DAD /* tradactual.jpg in Resources */,
 				BCFE62AF1885DCF500B79DAD /* Main_iPhone.storyboard in Resources */,
 				BCFE62A61885DCF500B79DAD /* InfoPlist.strings in Resources */,
 			);
@@ -271,7 +299,11 @@
 				BCFE62A81885DCF500B79DAD /* main.m in Sources */,
 				BCFE62B51885DCF500B79DAD /* MJViewController.m in Sources */,
 				BCFE62D71885DFE300B79DAD /* MJTileManager.m in Sources */,
+				BCFE62E61885FD7000B79DAD /* MJPawnView.m in Sources */,
+				BCFE62E01885F9C900B79DAD /* MJGameViewController.m in Sources */,
+				BCFE62E31885FA7F00B79DAD /* MJPawnContainer.m in Sources */,
 				BCFE62AC1885DCF500B79DAD /* MJAppDelegate.m in Sources */,
+				BCFE62DD1885F96800B79DAD /* MJGame.m in Sources */,
 				BCFE62DA1885E85500B79DAD /* MJPawnInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

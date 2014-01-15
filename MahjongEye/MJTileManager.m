@@ -76,7 +76,7 @@
                 }
                 [allPawns addObject:pawn];
             }
-            everyLine = [NSString stringWithFormat:@"%@..%@", everyLine, map[y], nil];
+            everyLine = [NSString stringWithFormat:@"%@.%@", everyLine, map[y], nil];
         }
     }];
     // finding blocking pawns
@@ -84,11 +84,11 @@
     [pawnAssociations enumerateKeysAndObjectsUsingBlock:^(NSString *pawnKey, MJPawnInfo *pawn, BOOL *stop) {
         NSRegularExpression *leftExp, *rightExp;
         NSError *err = nil;
-        leftExp = [[NSRegularExpression alloc] initWithPattern:[NSString stringWithFormat:@"[^.]%@", pawnKey, nil] options:NSRegularExpressionCaseInsensitive error:&err];
+        leftExp = [[NSRegularExpression alloc] initWithPattern:[NSString stringWithFormat:@"[^.%@]%@", pawnKey, pawnKey, nil] options:NSRegularExpressionCaseInsensitive error:&err];
         NSRange leftMatch = [leftExp rangeOfFirstMatchInString:everyLine options:0 range:whole];
         if (leftMatch.location != NSNotFound) {
             // has left neighbour. Assuming we have only one blocking neighbour at each side
-            rightExp = [[NSRegularExpression alloc] initWithPattern:[NSString stringWithFormat:@"%@[^.]", pawnKey, nil] options:NSRegularExpressionCaseInsensitive error:&err];
+            rightExp = [[NSRegularExpression alloc] initWithPattern:[NSString stringWithFormat:@"%@[^.%@]", pawnKey, pawnKey, nil] options:NSRegularExpressionCaseInsensitive error:&err];
             NSRange rightMatch = [rightExp rangeOfFirstMatchInString:everyLine options:0 range:whole];
             if (rightMatch.location != NSNotFound) { // blocked by sides
                 NSString *letter = [[everyLine substringWithRange:leftMatch] substringToIndex:1];
@@ -122,6 +122,32 @@
         [self setupPawnRelations:eye field:field];
     }
     return self;
+}
+
+- (void) fillPawnContainer:(MJPawnContainer *) container {
+    NSMutableArray *allPawns = [[NSMutableArray alloc] init];
+    for (int i = self.tiles.count; i--; )
+        [allPawns insertObject:@(i) atIndex:1.0*rand()*allPawns.count/RAND_MAX];
+    container.pawnsOnField = [self.pawns copy];
+    for (MJPawnInfo *p in container.pawnsOnField) {
+        if (p.eye == eField)
+            p.currentPawn = -1;
+        else {
+            NSNumber *n = allPawns.lastObject;
+            p.currentPawn = [n integerValue];
+            [allPawns removeLastObject];
+        }
+    }
+    NSMutableArray *a = [[NSMutableArray alloc] init];
+    for (int i = 3; i--; [allPawns removeLastObject]) {
+        [a addObject:allPawns.lastObject];
+    }
+    container.dragonPawns = a;
+    a = [[NSMutableArray alloc] init];
+    for (int i = 6; i--; [allPawns removeLastObject]) {
+        [a addObject:allPawns.lastObject];
+    }
+    container.slayerPawns = a;
 }
 
 

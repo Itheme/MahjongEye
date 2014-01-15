@@ -7,11 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MJPawnContainer.h"
 
 @interface MJTileManager : NSObject
 
 @property (nonatomic, readonly) CGSize tileSize;
+@property (nonatomic, readonly, strong) NSArray *tiles;
 
 - (id) initWithTiles:(UIImage *) tiles Field:(NSArray *)field Eye:(NSArray *)eye;
+
+- (void) fillPawnContainer:(MJPawnContainer *) container;
 
 @end

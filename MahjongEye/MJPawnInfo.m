@@ -23,10 +23,10 @@
 
 - (BOOL) getBlocked {
     if (self.blockedIfExists) {
-        if (self.blockedIfExists.count == 2) { // 0-1 are side blockers, 2 is top blocker
-            return (((MJPawnInfo *)self.blockedIfExists[0]).currentPawn >= 0) && (((MJPawnInfo *)self.blockedIfExists[1]).currentPawn >= 0);
-        }
-        return ((MJPawnInfo *)self.blockedIfExists[2]).currentPawn >= 0;
+        if (self.blockedIfExists.count > 2) // 0-1 are side blockers, 2 is top blocker
+            if (((MJPawnInfo *)self.blockedIfExists[2]).currentPawn >= 0)
+                return YES;
+        return (((MJPawnInfo *)self.blockedIfExists[0]).currentPawn >= 0) && (((MJPawnInfo *)self.blockedIfExists[1]).currentPawn >= 0);
     }
     return NO;
 }
