@@ -83,6 +83,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self setupWithTile:image HLImage:hlImage Hand:YES Delegate:nil];
+        self.highlighted = YES;
     }
     return self;
 }

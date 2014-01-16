@@ -21,5 +21,6 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *doneButton;
 - (IBAction)doneButtonTouched:(id)sender;
 @property (weak, nonatomic) IBOutlet UILabel *restPawnsCountLabel;
+- (IBAction)backPressed:(id)sender;
 
 @end

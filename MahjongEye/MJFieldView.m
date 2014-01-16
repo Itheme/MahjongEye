@@ -50,9 +50,7 @@
     container = aContainer;
     [self setNeedsDisplay];
 }
-#warning add eye here
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
+
 - (void)drawRect:(CGRect)rect
 {
     if (self.dragonImage == nil) return;
@@ -74,6 +72,18 @@
     for (MJPawnInfo *p in container.pawnsOnField) {
         if (p.level == 0)
             CGContextAddRect(context, CGRectMake(p.coordinate.x * ts.width, p.coordinate.y * ts.height, ts.width, ts.height));
+    }
+    CGContextStrokePath(context);
+    CGContextSetRGBStrokeColor(context, 1.0, 1.0, 0, 1.0);
+    for (MJPawnInfo *p in container.pawnsOnField) {
+        if (p.eye == eGray)
+            CGContextAddRect(context, CGRectInset(CGRectMake(p.coordinate.x * ts.width, p.coordinate.y * ts.height, ts.width, ts.height), 5, 5));
+    }
+    CGContextStrokePath(context);
+    CGContextSetRGBStrokeColor(context, 1.0, 0.0, 0, 1.0);
+    for (MJPawnInfo *p in container.pawnsOnField) {
+        if (p.eye == eBlack)
+            CGContextAddRect(context, CGRectInset(CGRectMake(p.coordinate.x * ts.width, p.coordinate.y * ts.height, ts.width, ts.height), 5, 5));
     }
     CGContextStrokePath(context);
 }

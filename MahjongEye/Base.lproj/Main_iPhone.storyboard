@@ -57,7 +57,11 @@
                                     <constraint firstAttribute="height" constant="60" id="S3o-3L-xzA"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem title="Back" id="TcW-fQ-PvB"/>
+                                    <barButtonItem title="Back" id="TcW-fQ-PvB">
+                                        <connections>
+                                            <action selector="backPressed:" destination="aXk-hk-Rb8" id="t9T-dr-gcS"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="8ij-7u-Pi2"/>
                                     <barButtonItem title="Done" id="7Ic-nw-75w">
                                         <connections>
