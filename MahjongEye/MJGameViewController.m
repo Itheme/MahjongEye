@@ -46,8 +46,8 @@ typedef enum PawnAvailabilityEnum {
 
 @property (nonatomic, strong) NSMutableArray *pawnViews;
 @property (nonatomic, strong) UIView *hlViewHand;
-@property (nonatomic, strong) UIView *hlViewField0;
-@property (nonatomic, strong) UIView *hlViewField1;
+@property (nonatomic, strong) UIImageView *hlViewField0;
+@property (nonatomic, strong) UIImageView *hlViewField1;
 
 @property (nonatomic, weak) MJTileManager *manager;
 
@@ -83,11 +83,24 @@ typedef enum PawnAvailabilityEnum {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.suiteImage0 = [UIImage imageNamed:@"back0"];
-    self.suiteImage1 = [UIImage imageNamed:@"back1"];
+    self.suiteImage0 = [UIImage imageNamed:@"pawnBack0"];
+    self.suiteImage1 = [UIImage imageNamed:@"pawnBack1"];
     self.field.delegate = self;
     MJAppDelegate *appDelegate = (MJAppDelegate *)[UIApplication sharedApplication].delegate;
     self.manager = appDelegate.tileManager;
+}
+
+- (UIImageView *) defaultCursorView {
+    CGSize fs = self.manager.tileSize;
+    UIImageView *res = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, fs.width, fs.height)];
+    res.image = [UIImage imageNamed:@"cursor.png"];
+    //res = [[UIView alloc] initWithFrame:CGRectMake(0, 0, fs.width, fs.height)];
+    res.hidden = NO;
+    res.alpha = 0.5;
+    //res.opaque = YES;
+    res.userInteractionEnabled = YES;
+    //res.backgroundColor = [UIColor yellowColor];
+    return res;
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -102,18 +115,8 @@ typedef enum PawnAvailabilityEnum {
     MJPawnContainer *c = [[MJPawnContainer alloc] init];
     [self.manager fillPawnContainer:c];
     self.pawns = c;
-    self.hlViewField0 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, fs.width, fs.height)];
-    self.hlViewField0.hidden = NO;
-    self.hlViewField0.alpha = 0.5;
-    self.hlViewField0.opaque = YES;
-    self.hlViewField0.userInteractionEnabled = YES;
-    self.hlViewField0.backgroundColor = [UIColor yellowColor];
-    
-    self.hlViewField1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, fs.width, fs.height)];
-    self.hlViewField1.hidden = NO;
-    self.hlViewField1.alpha = 0.5;
-    self.hlViewField1.userInteractionEnabled = YES;
-    self.hlViewField1.backgroundColor = [UIColor yellowColor];
+    self.hlViewField0 = [self defaultCursorView];
+    self.hlViewField1 = [self defaultCursorView];
     
     self.hlViewHand = [[UIView alloc] initWithFrame:CGRectMake(0, 0, fs.width, fs.height)];
     self.hlViewHand.hidden = NO;
@@ -143,8 +146,8 @@ typedef enum PawnAvailabilityEnum {
     topLeft.x *= fs.width;
     topLeft.y *= fs.height;
     if (p.level > 0) {
-        topLeft.x -= 4;
-        topLeft.y -= 4;
+        topLeft.x -= 2;
+        topLeft.y -= 2;
     }
     return CGRectMake(topLeft.x, topLeft.y, fs.width, fs.height);
 }
