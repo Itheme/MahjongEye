@@ -80,25 +80,52 @@
                                     <action selector="drawButtonTouched:" destination="aXk-hk-Rb8" eventType="touchUpInside" id="DwH-KV-VUJ"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pawns left" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="60" translatesAutoresizingMaskIntoConstraints="NO" id="KSi-VB-6Kr">
+                                <rect key="frame" x="260" y="420" width="60" height="42"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="KRu-1d-Cvv"/>
+                                    <constraint firstAttribute="height" constant="42" id="Rlj-W2-Deb"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N13-k6-q4g">
+                                <rect key="frame" x="269" y="471" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="7Tq-W1-Uof"/>
+                                    <constraint firstAttribute="width" constant="42" id="tG1-gu-QFW"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="KSi-VB-6Kr" secondAttribute="trailing" id="00U-rg-8qy"/>
                             <constraint firstItem="Trq-Lo-mXh" firstAttribute="leading" secondItem="QJQ-zx-P3a" secondAttribute="leading" id="0HS-qM-sIH"/>
                             <constraint firstItem="QN3-hA-aCo" firstAttribute="top" secondItem="dG6-Bv-j1f" secondAttribute="bottom" id="5VU-lY-H3a"/>
                             <constraint firstAttribute="trailing" secondItem="dG6-Bv-j1f" secondAttribute="trailing" id="BUS-dg-nxB"/>
                             <constraint firstItem="Emu-fs-RGd" firstAttribute="top" secondItem="QJQ-zx-P3a" secondAttribute="top" id="KJf-BJ-ZQx"/>
+                            <constraint firstItem="N13-k6-q4g" firstAttribute="top" secondItem="KSi-VB-6Kr" secondAttribute="bottom" constant="9" id="KrB-JQ-G6y"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Trq-Lo-mXh" secondAttribute="trailing" priority="994" constant="40" id="Nh7-mO-AHy"/>
                             <constraint firstItem="Emu-fs-RGd" firstAttribute="leading" secondItem="QJQ-zx-P3a" secondAttribute="leading" id="cga-Q8-q8a"/>
                             <constraint firstItem="Trq-Lo-mXh" firstAttribute="top" secondItem="Emu-fs-RGd" secondAttribute="bottom" id="eGn-DI-7DB"/>
                             <constraint firstItem="Trq-Lo-mXh" firstAttribute="leading" secondItem="QJQ-zx-P3a" secondAttribute="leading" id="ed5-6e-7me"/>
+                            <constraint firstAttribute="trailing" secondItem="N13-k6-q4g" secondAttribute="trailing" constant="9" id="fv9-FQ-dTi"/>
                             <constraint firstAttribute="trailing" secondItem="Emu-fs-RGd" secondAttribute="trailing" id="qDg-XG-cLl"/>
                             <constraint firstItem="QN3-hA-aCo" firstAttribute="top" secondItem="Trq-Lo-mXh" secondAttribute="bottom" constant="60" id="xXE-hi-P2R"/>
+                            <constraint firstItem="dG6-Bv-j1f" firstAttribute="top" secondItem="N13-k6-q4g" secondAttribute="bottom" constant="8" id="zwD-UA-mJa"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="doneButton" destination="7Ic-nw-75w" id="bJo-wL-v1N"/>
                         <outlet property="drawButton" destination="dG6-Bv-j1f" id="wUS-SH-ZJc"/>
                         <outlet property="field" destination="Trq-Lo-mXh" id="BCI-XD-sfR"/>
+                        <outlet property="restPawnsCountLabel" destination="N13-k6-q4g" id="eJu-gq-ma2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hh2-wB-6Le" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -163,26 +163,32 @@
     }
     container.slayerPawns = a;
     container.pawnsToDraw = allPawns;
+    [container willChangeValueForKey:@"pawnsToDraw"];
+    [container didChangeValueForKey:@"pawnsToDraw"];
 }
 
 - (void) userDraw:(MJPawnContainer *) container {
     if (container.pawnsToDraw.count > 0) {
         [container.slayerPawns addObject:[container.pawnsToDraw lastObject]];
+        [container willChangeValueForKey:@"pawnsToDraw"];
         [container.pawnsToDraw removeLastObject];
+        [container didChangeValueForKey:@"pawnsToDraw"];
     }
 }
 
 - (void) dragonDraws:(MJPawnContainer *) container {
     if (container.pawnsToDraw.count > 0) {
         [container.dragonPawns addObject:[container.pawnsToDraw lastObject]];
+        [container willChangeValueForKey:@"pawnsToDraw"];
         [container.pawnsToDraw removeLastObject];
+        [container didChangeValueForKey:@"pawnsToDraw"];
     }
 }
 
 - (void) fillUserHand:(MJPawnContainer *) container {
-    while ((container.pawnsToDraw.count > 0) && (container.slayerPawns.count < 6))
+    while ((container.pawnsToDraw.count > 0) && (container.slayerPawns.count < 6)) {
         [self userDraw:container];
-
+    }
 }
 
 - (void) setFieldSize:(CGSize)aFieldSize {

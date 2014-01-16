@@ -62,6 +62,8 @@ typedef enum PawnAvailabilityEnum {
 
 @property (nonatomic, strong) NSNumber *hlDragonPawn;
 
+@property (nonatomic, strong) UIAlertView *lastAlert;
+
 @end
 
 @implementation MJGameViewController
@@ -122,6 +124,13 @@ typedef enum PawnAvailabilityEnum {
     self.field.container = self.pawns;
 }
 
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"pawnsToDraw"])
+        self.restPawnsCountLabel.text = [NSString stringWithFormat:@"%d", self.pawns.pawnsToDraw.count, nil];
+    else
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -164,7 +173,13 @@ typedef enum PawnAvailabilityEnum {
         [v removeFromSuperview];
     }
     [self.pawnViews removeAllObjects];
+    if (apawns) {
+        if (pawns)
+            [pawns removeObserver:self forKeyPath:@"pawnsToDraw"];
+        [apawns addObserver:self forKeyPath:@"pawnsToDraw" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+    }
     pawns = apawns;
+    [self observeValueForKeyPath:@"pawnsToDraw" ofObject:pawns change:nil context:nil];
     CGSize fs = self.manager.tileSize;
     __block CGRect r = CGRectMake(0, 0, fs.width, fs.height);
     for (MJPawnInfo *p in pawns.pawnsOnField) {
@@ -206,6 +221,7 @@ typedef enum PawnAvailabilityEnum {
             }
         }
     }
+#warning improve AI here
     self.hlDragonPawn = nil;
     // Now just stupid pawns fetching
     if (pawns.dragonPawns.count > 0) {
@@ -244,9 +260,15 @@ typedef enum PawnAvailabilityEnum {
         if (loose)
             self.state = sPlayerLost;
     }
+    if (win)
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.lastAlert = [[UIAlertView alloc] initWithTitle:@"You win!" message:@"Congratulations! You have defeated the dragon" delegate:self cancelButtonTitle:@"Good" otherButtonTitles:nil];
+        });
+    if (loose)
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.lastAlert = [[UIAlertView alloc] initWithTitle:@"You lost!" message:@"You failed to defeat dragon" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+        });
     return !(win || loose);
-#warning win here
-#warning loose here
 }
 
 - (void)setState:(GameState)aState {
@@ -793,6 +815,15 @@ typedef enum PawnAvailabilityEnum {
             break;
         }
     }
+}
+
+#pragma Mark - UIAlertViewDelegate methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [self dismissViewControllerAnimated:YES completion:^{
+        self.pawns = nil;
+        self.lastAlert = nil;
+    }];
 }
 
 #pragma Mark - button events
