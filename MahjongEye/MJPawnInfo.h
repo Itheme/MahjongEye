@@ -22,6 +22,7 @@ typedef enum EyeEnum {
 @property (nonatomic) MJPawnInfo *couldBePlacedIfExists;
 @property (nonatomic) int currentPawn; // -1 no pawn
 @property (nonatomic) Eye eye; // 0 - no eye; 1 - gray; 2 - black;
+@property (nonatomic) int possiblePawn;
 @property (nonatomic) NSUInteger level;
 @property (nonatomic, readonly, getter = getBlocked) BOOL blocked;
 @property (nonatomic, readonly, getter = getCouldBePlaced) BOOL couldBePlaced;
@@ -30,5 +31,16 @@ typedef enum EyeEnum {
 - (BOOL) almostSameCoordinate:(CGPoint) p;
 - (BOOL) currentEquals:(MJPawnInfo *)p;
 - (BOOL) currentEqualsNumber:(NSNumber *)n;
+
+@end
+
+
+@interface MJPawnInfo (PossibilityResearch)
+
+@property (nonatomic, readonly, getter = getPossibleBlocked) BOOL possibleBlocked;
+@property (nonatomic, readonly, getter = getCouldBePossiblePlaced) BOOL possibleCouldBePlaced;
+
+- (BOOL) currentOrPossibleEqualsNumber:(NSNumber *)n;
+
 
 @end
