@@ -11,6 +11,10 @@
 #import "MJPawnInfo.h"
 #import "MJTileManager.h"
 
+// AI calculation
+#define kBADFIELDSCORE 10000
+
+
 typedef enum GameStateEnum {
     sGameIsUninitialized = 0,
     sPlayerTurnShouldPlacePawn = 1,
@@ -132,7 +136,7 @@ typedef enum PawnAvailabilityEnum {
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"pawnsToDraw"])
-        self.restPawnsCountLabel.text = [NSString stringWithFormat:@"%d", self.pawns.pawnsToDraw.count, nil];
+        self.restPawnsCountLabel.text = [NSString stringWithFormat:@"%lu", self.pawns.pawnsToDraw.count, nil];
     else
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
@@ -212,60 +216,158 @@ typedef enum PawnAvailabilityEnum {
     }];
 }
 
+
+// AI functions
+- (double) fieldMatchSummOfProbabilities:(NSArray *) unblockedPawns LeftPawns:(int *)leftPawns LeftPawnsCount:(int)leftCount Limit:(double) limit {
+    if (leftCount > 0) {
+        double res = 0;
+        for (MJPawnInfo *p in unblockedPawns) {
+            int p0 = p.currentPawn;
+            BOOL newOne = p0 < 0;
+            if (newOne)
+                p0 = p.possiblePawn;
+            p0 >>= 2;
+            double inc = 1.0;
+            if (p.eye > eField)
+                inc = (p.eye == eGray)?7.0:10;
+            for (int i = leftCount; i--; )
+                if (p0 == leftPawns[i])
+                    res += inc;
+#warning Take into account player's pawns. They are not trustworthy!
+#warning + interfield removals
+        }
+        res /= leftCount;
+        return res;
+    }
+    return 0;
+}
+
+- (NSDictionary *) checkFieldScoresFor:(NSArray *)pawnsOnField LeftPawns:(int *)leftPawns LeftPawnsCount:(int)leftCount {
+    NSMutableArray *unblocked = [[NSMutableArray alloc] init];
+    NSMutableArray *possibilities = [[NSMutableArray alloc] init];
+    NSNumber *bestP0 = nil;
+    MJPawnInfo *bestP1 = nil;
+    NSMutableArray *results = [[NSMutableArray alloc] init];
+    
+    for (MJPawnInfo *p in pawnsOnField) {
+        if (p.currentPawn >= 0) {
+            if (!p.blocked)
+                [unblocked addObject:p];
+        } else
+            if (p.couldBePlaced)
+                [possibilities addObject:p];
+    }
+    double initialRes = INFINITY;//[self fieldMatchSummOfProbabilities:unblocked LeftPawns:leftPawns];
+    for (NSNumber *possibility0 in pawns.dragonPawns) {
+        int p0 = possibility0.intValue;
+        for (MJPawnInfo *possibility1 in possibilities) {
+            possibility1.possiblePawn = p0;
+            [unblocked removeAllObjects];
+            double res = 0;
+            for (MJPawnInfo *p in pawnsOnField) {
+                if (((p.currentPawn >= 0) || (p.possiblePawn >= 0)) && !p.possibleBlocked) {
+                    for (MJPawnInfo *unblockedP in unblocked) // this check is obsolete in case of two turn prediction
+                        if ([unblockedP currentOrPossibleEquals:p]) {
+                            res += kBADFIELDSCORE;
+                            break;
+                        }
+                    [unblocked addObject:p];
+                }
+            }
+            res += [self fieldMatchSummOfProbabilities:unblocked LeftPawns:leftPawns LeftPawnsCount:leftCount Limit:initialRes];
+            if (res < initialRes * 1.01) {
+                initialRes = res;
+                if (results.count > 0) {
+                    NSDictionary *d = results.firstObject;
+                    NSNumber *maxErr = d[@"ERR"];
+                    if (maxErr.doubleValue > initialRes * 1.01)
+                        [results removeObject:d];
+                }
+                [results addObject:@{@"ERR": @(res), @"pawnInHand": possibility0, @"fieldPos": possibility1}];
+            }
+            possibility1.possiblePawn = -1;
+        }
+    }
+    if (results.count > 0) {
+        int i = 1.0*results.count*rand()/RAND_MAX;
+        return results[i]; // we got a list of same-rank possible movements and choosing random one within them
+    }
+    return nil;
+}
+
 - (void) doAI {
-    MJPawnInfo *target = nil;
+    MJPawnInfo *target0 = nil;
     // do we need to cover the eye?
     for (MJPawnInfo *p in pawns.pawnsOnField)
         if ((p.eye > eField) && (p.currentPawn < 0)) {
-            if (target) {
-                if (target.eye < p.eye) {
-                    target = p;
+            if (target0) {
+                if (target0.eye < p.eye) {
+                    target0 = p;
                     break;
                 }
             } else
-                target = p;
+                target0 = p;
         }
-    // Now just stupid pawns putting
-    if (target == nil) {
-        while (true) {
-            int i = 1.0*pawns.pawnsOnField.count*rand()/RAND_MAX;
-            MJPawnInfo *p = pawns.pawnsOnField[i];
-            if ((p.currentPawn < 0) && (p.couldBePlaced)) {
-                target = p;
-                break;
-            }
-        }
+    NSArray *leftPawns = [pawns.pawnsToDraw arrayByAddingObjectsFromArray:pawns.slayerPawns];
+    if (target0 == nil) {
+        int *lp = malloc(sizeof(int)*leftPawns.count);
+        [leftPawns enumerateObjectsUsingBlock:^(NSNumber *n, NSUInteger idx, BOOL *stop) {
+            lp[idx] = n.intValue;
+        }];
+        NSDictionary *res = [self checkFieldScoresFor:pawns.pawnsOnField LeftPawns:lp LeftPawnsCount:leftPawns.count];
+        free(lp);
+        if (res) {
+            target0 = res[@"fieldPos"];
+            self.hlDragonPawn = res[@"pawnInHand"];
+        } else
+            target0 = nil;
+        // Now just stupid pawns putting
+//        MJPawnInfo *target1 = nil;
+//        MJPawnInfo *target2 = nil;
+//        while (true) {
+//            int i = 1.0*pawns.pawnsOnField.count*rand()/RAND_MAX;
+//            MJPawnInfo *p = pawns.pawnsOnField[i];
+//            if ((p.currentPawn < 0) && (p.couldBePlaced)) {
+//                target = p;
+//                break;
+//            }
+//        }
+    } else {
+        self.hlDragonPawn = nil;
+        if (pawns.dragonPawns.count > 0)
+            self.hlDragonPawn = pawns.dragonPawns.lastObject;
     }
 #warning improve AI here
-    self.hlDragonPawn = nil;
-    // Now just stupid pawns fetching
-    if (pawns.dragonPawns.count > 0) {
-        self.hlDragonPawn = pawns.dragonPawns.lastObject;
-    }
-    [self performSelectorOnMainThread:@selector(dragonPuts:) withObject:target waitUntilDone:YES];
+    [self performSelectorOnMainThread:@selector(dragonPuts:) withObject:target0 waitUntilDone:YES];
 }
 
 - (BOOL) checkGameIsNotOver {
     BOOL win = NO;
     BOOL loose = NO;
-    if (pawns.dragonPawns == 0) {
-        int opened = 0;
-        int total = 0;
-        for (MJPawnInfo *p in pawns.pawnsOnField) {
-            if (p.eye) {
-                if (p.currentPawn < 0)
-                    opened++;
-                total++;
-            }
+    int opened = 0;
+    int total = 0;
+    for (MJPawnInfo *p in pawns.pawnsOnField) {
+        if (p.eye) {
+            if (p.currentPawn < 0)
+                opened++;
+            total++;
         }
-        if (opened > total / 2)
-            win = YES;
-    } else {
-        loose = YES;
-        for (MJPawnInfo *p in pawns.pawnsOnField) {
-            if (p.currentPawn < 0) {
-                loose = NO;
-                break;
+    }
+    if (total == opened)
+        win = YES;
+    else {
+        if (pawns.dragonPawns.count == 0) {
+            if (opened > total / 2)
+                win = YES;
+            else
+                loose = YES;
+        } else {
+            loose = YES;
+            for (MJPawnInfo *p in pawns.pawnsOnField) {
+                if (p.currentPawn < 0) {
+                    loose = NO;
+                    break;
+                }
             }
         }
     }
@@ -278,10 +380,12 @@ typedef enum PawnAvailabilityEnum {
     if (win)
         dispatch_async(dispatch_get_main_queue(), ^{
             self.lastAlert = [[UIAlertView alloc] initWithTitle:@"You win!" message:@"Congratulations! You have defeated the dragon" delegate:self cancelButtonTitle:@"Good" otherButtonTitles:nil];
+            [self.lastAlert show];
         });
     if (loose)
         dispatch_async(dispatch_get_main_queue(), ^{
             self.lastAlert = [[UIAlertView alloc] initWithTitle:@"You lost!" message:@"You failed to defeat dragon" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+            [self.lastAlert show];
         });
     return !(win || loose);
 }
@@ -295,10 +399,11 @@ typedef enum PawnAvailabilityEnum {
             [self performSelectorInBackground:@selector(doAI) withObject:nil];
     } else {
         if (aState == sPlayerTurnShouldPlacePawn) {
-#warning switch this state to could proceed if nothing to draw
             [self.manager fillUserHand:pawns];
             [self rearrangeHand];
             [self checkGameIsNotOver];
+            if (pawns.pawnsToDraw.count == 0)
+                self.state = sPlayerTurnCouldProceed;
         }
     }
 #warning present helping labels somewhere...
