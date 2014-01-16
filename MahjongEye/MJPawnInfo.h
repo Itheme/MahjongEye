@@ -41,6 +41,7 @@ typedef enum EyeEnum {
 @property (nonatomic, readonly, getter = getCouldBePossiblePlaced) BOOL possibleCouldBePlaced;
 
 - (BOOL) currentOrPossibleEqualsNumber:(NSNumber *)n;
+- (BOOL) currentOrPossibleEquals:(MJPawnInfo *)p;
 
 
 @end

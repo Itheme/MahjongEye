@@ -99,5 +99,21 @@
     return NO;
 }
 
+- (BOOL) currentOrPossibleEquals:(MJPawnInfo *)p {
+    if (p) {
+        int p0;
+        if (self.currentPawn >= 0)
+            p0 = self.currentPawn;
+        else
+            p0 = self.possiblePawn;
+        int p1;
+        if (p.currentPawn >= 0)
+            p1 = p.currentPawn;
+        else
+            p1 = p.possiblePawn;
+        return (p0 >> 2) == (p1 >> 2);
+    }
+    return NO;
+}
 
 @end

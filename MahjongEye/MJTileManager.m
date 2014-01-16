@@ -10,8 +10,8 @@
 #import "MJPawnInfo.h"
 
 @interface MJTileManager () {
-    int fieldWidth;  // in quaters of pawns
-    int fieldHeight; // in quaters of pawns
+    NSUInteger fieldWidth;  // in quaters of pawns
+    NSUInteger fieldHeight; // in quaters of pawns
 }
 
 @property (nonatomic) CGSize tileSize;
@@ -47,6 +47,15 @@
     }
     self.tiles = t;
     CGColorSpaceRelease(cspace);
+}
+
+- (NSString *)shrinked:(NSString *)string {
+    unichar chars[string.length / 2];
+    for (int i = 0; i < string.length; i++) {
+        chars[i/2] = [string characterAtIndex:i];
+        i++;
+    }
+    return [NSString stringWithCharacters:chars length:string.length/2];
 }
 
 - (void)setupPawnRelations:(NSArray *)eye field:(NSArray *)field {
@@ -140,7 +149,7 @@
 
 - (void) fillPawnContainer:(MJPawnContainer *) container {
     NSMutableArray *allPawns = [[NSMutableArray alloc] init];
-    for (int i = self.tiles.count; i--; )
+    for (NSUInteger i = self.tiles.count; i--; )
         [allPawns insertObject:@(i) atIndex:1.0*rand()*allPawns.count/RAND_MAX];
     container.pawnsOnField = [self.pawns copy];
     for (MJPawnInfo *p in container.pawnsOnField) {

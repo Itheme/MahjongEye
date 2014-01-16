@@ -46,9 +46,12 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Trq-Lo-mXh" customClass="MJFieldView">
-                                <rect key="frame" x="0.0" y="60" width="257" height="439"/>
+                                <rect key="frame" x="0.0" y="60" width="257" height="438"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="400" id="gxz-89-ZXb"/>
+                                </constraints>
                             </view>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Emu-fs-RGd">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
@@ -121,7 +124,7 @@
                             <constraint firstItem="Trq-Lo-mXh" firstAttribute="leading" secondItem="QJQ-zx-P3a" secondAttribute="leading" id="ed5-6e-7me"/>
                             <constraint firstAttribute="trailing" secondItem="N13-k6-q4g" secondAttribute="trailing" constant="9" id="fv9-FQ-dTi"/>
                             <constraint firstAttribute="trailing" secondItem="Emu-fs-RGd" secondAttribute="trailing" id="qDg-XG-cLl"/>
-                            <constraint firstItem="QN3-hA-aCo" firstAttribute="top" secondItem="Trq-Lo-mXh" secondAttribute="bottom" constant="60" id="xXE-hi-P2R"/>
+                            <constraint firstItem="QN3-hA-aCo" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Trq-Lo-mXh" secondAttribute="bottom" constant="60" id="xXE-hi-P2R"/>
                             <constraint firstItem="dG6-Bv-j1f" firstAttribute="top" secondItem="N13-k6-q4g" secondAttribute="bottom" constant="8" id="zwD-UA-mJa"/>
                         </constraints>
                     </view>
