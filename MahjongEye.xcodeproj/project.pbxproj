@@ -32,6 +32,7 @@
 		BCFE62E81886020800B79DAD /* back1.png in Resources */ = {isa = PBXBuildFile; fileRef = BCFE62E71886020800B79DAD /* back1.png */; };
 		BCFE62EA1886021500B79DAD /* back0.png in Resources */ = {isa = PBXBuildFile; fileRef = BCFE62E91886021500B79DAD /* back0.png */; };
 		BCFE62EE1886B01500B79DAD /* MJFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = BCFE62ED1886B01500B79DAD /* MJFieldView.m */; };
+		BCFE62F01887DFAC00B79DAD /* tempDragon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BCFE62EF1887DFAC00B79DAD /* tempDragon.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +83,7 @@
 		BCFE62E91886021500B79DAD /* back0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back0.png; sourceTree = "<group>"; };
 		BCFE62EC1886B01500B79DAD /* MJFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJFieldView.h; sourceTree = "<group>"; };
 		BCFE62ED1886B01500B79DAD /* MJFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJFieldView.m; sourceTree = "<group>"; };
+		BCFE62EF1887DFAC00B79DAD /* tempDragon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tempDragon.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +145,7 @@
 			children = (
 				BCFE62E91886021500B79DAD /* back0.png */,
 				BCFE62E71886020800B79DAD /* back1.png */,
+				BCFE62EF1887DFAC00B79DAD /* tempDragon.jpg */,
 				BCFE62D31885DFCE00B79DAD /* tradactual.jpg */,
 				BCFE62AA1885DCF500B79DAD /* MJAppDelegate.h */,
 				BCFE62AB1885DCF500B79DAD /* MJAppDelegate.m */,
@@ -290,6 +293,7 @@
 				BCFE62EA1886021500B79DAD /* back0.png in Resources */,
 				BCFE62D41885DFCE00B79DAD /* tradactual.jpg in Resources */,
 				BCFE62AF1885DCF500B79DAD /* Main_iPhone.storyboard in Resources */,
+				BCFE62F01887DFAC00B79DAD /* tempDragon.jpg in Resources */,
 				BCFE62A61885DCF500B79DAD /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

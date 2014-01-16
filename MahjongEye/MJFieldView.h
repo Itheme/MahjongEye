@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MJPawnContainer.h"
 
 @protocol FieldDelegate <NSObject>
 
@@ -18,6 +19,8 @@
 
 @interface MJFieldView : UIView
 
+@property (nonatomic, strong) UIImage *dragonImage;
+@property (nonatomic, strong, setter = setContainer:) MJPawnContainer *container;
 @property (nonatomic, weak) id<FieldDelegate> delegate;
 
 @end

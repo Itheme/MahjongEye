@@ -118,6 +118,8 @@ typedef enum PawnAvailabilityEnum {
     self.hlViewHand.alpha = 0.5;
     self.hlViewHand.userInteractionEnabled = YES;
     self.hlViewHand.backgroundColor = [UIColor yellowColor];
+    
+    self.field.container = self.pawns;
 }
 
 - (void)didReceiveMemoryWarning
