@@ -40,6 +40,7 @@
     [self.delegate trySelect:p];
 }
 
+#warning add eye here
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

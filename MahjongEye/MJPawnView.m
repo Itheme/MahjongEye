@@ -16,12 +16,13 @@
 
 @implementation MJPawnView
 
+@synthesize delegate;
+
 - (void) setupWithTile:(UIImage *)image HLImage:(UIImage *)hlImage Hand:(BOOL)inHand Delegate:(id<PawnViewMaster>) master
 {
     self.userInteractionEnabled = YES;
     self.image = image;
     self.highlightedImage = hlImage;
-    self.delegate = master;
     if (inHand) {
         if (master) {
             self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTapped:)];
@@ -33,12 +34,23 @@
         } else
             self.dragon = YES;
     }
+    self.delegate = master;
 }
 
 - (void) userTapped:(id)tapInfo {
     [self.delegate userTapped:self];
 }
 
+- (void) setDelegate:(id<PawnViewMaster>)aDelegate {
+    delegate = aDelegate;
+    if (aDelegate) {
+        self.slayer = YES;
+        self.tapGesture.enabled = YES;
+    } else {
+        self.slayer = NO;
+        self.tapGesture.enabled = NO;
+    }
+}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

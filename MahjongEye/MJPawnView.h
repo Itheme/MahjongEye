@@ -23,7 +23,7 @@
 @property (nonatomic, strong) NSNumber *handPawn;
 @property (nonatomic) BOOL dragon; // this pawn is dragon's
 @property (nonatomic) BOOL slayer; // this pawn is slayer's
-@property (nonatomic, weak) id<PawnViewMaster> delegate;
+@property (nonatomic, weak, setter = setDelegate:) id<PawnViewMaster> delegate;
 
 // field pawn views
 - (id)initWithFrame:(CGRect)frame Tile:(UIImage *)image HLImage:(UIImage *)hlImage;

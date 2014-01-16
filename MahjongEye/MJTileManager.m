@@ -54,49 +54,58 @@
     NSMutableDictionary *pawnAssociations = [[NSMutableDictionary alloc] init];
     fieldWidth = [((NSString *)eye[0]) length];
     fieldHeight = eye.count;
-    __block NSString *everyLine = @"";
+    __block NSString *everyLine0 = @"";
+    __block NSString *everyLine1 = @"";
     [field enumerateObjectsUsingBlock:^(NSArray *map, NSUInteger level, BOOL *stop) {
         NSRange r;
         r.length = 1;
+        NSArray *level0Field = field[0];
         for (int y = 0; y < fieldHeight; y++) {
+            NSString *mapRow = map[y];
+            NSString *level0Row = level0Field[y];
             for (int x = 0; x < fieldWidth; x++) {
                 r.location = x;
-                NSString *pawnKey = [map[y] substringWithRange:r];
+                NSString *pawnKey = [mapRow substringWithRange:r];
                 if ([pawnKey isEqualToString:@"."])
                     continue;
+                if (pawnAssociations[pawnKey]) continue; // pawn already parsed
                 Eye e = eField;
                 if (level == 0) {
                     NSString *eyeKey = [eye[y] substringWithRange:r];
                     e = eyeKey.intValue;
                 }
-                if (pawnAssociations[pawnKey]) continue; // pawn already parsed
                 MJPawnInfo *pawn = [[MJPawnInfo alloc] initWithCoordiante:CGPointMake(x * 0.5, y * 0.5) Eye:e Level:level];
                 [pawnAssociations setObject:pawn forKey:pawnKey];
                 if (level == 1) {
-                    NSArray *level0Field = field[0];
-                    pawnKey = [level0Field[y] substringWithRange:r];
+                    pawnKey = [level0Row substringWithRange:r];
                     pawn.couldBePlacedIfExists = pawnAssociations[pawnKey];
                 }
                 [allPawns addObject:pawn];
             }
-            everyLine = [NSString stringWithFormat:@"%@.%@", everyLine, map[y], nil];
+            if (level == 0)
+                everyLine0 = [NSString stringWithFormat:@"%@..%@", everyLine0, mapRow, nil];
+            else
+                everyLine1 = [NSString stringWithFormat:@"%@..%@", everyLine1, mapRow, nil];
         }
     }];
     // finding blocking pawns
-    NSRange whole = NSMakeRange(0, everyLine.length);
+    NSRange whole = NSMakeRange(0, everyLine0.length);
     [pawnAssociations enumerateKeysAndObjectsUsingBlock:^(NSString *pawnKey, MJPawnInfo *pawn, BOOL *stop) {
         NSRegularExpression *leftExp, *rightExp;
         NSError *err = nil;
-        leftExp = [[NSRegularExpression alloc] initWithPattern:[NSString stringWithFormat:@"[^.%@]%@", pawnKey, pawnKey, nil] options:NSRegularExpressionCaseInsensitive error:&err];
+        NSString *everyLine = (pawn.level == 0)?everyLine0:everyLine1;
+        leftExp = [[NSRegularExpression alloc] initWithPattern:[NSString stringWithFormat:@"[^.%@]%@", pawnKey, pawnKey, nil] options:0 error:&err];
         NSRange leftMatch = [leftExp rangeOfFirstMatchInString:everyLine options:0 range:whole];
         if (leftMatch.location != NSNotFound) {
             // has left neighbour. Assuming we have only one blocking neighbour at each side
-            rightExp = [[NSRegularExpression alloc] initWithPattern:[NSString stringWithFormat:@"%@[^.%@]", pawnKey, pawnKey, nil] options:NSRegularExpressionCaseInsensitive error:&err];
+            rightExp = [[NSRegularExpression alloc] initWithPattern:[NSString stringWithFormat:@"%@[^.%@]", pawnKey, pawnKey, nil] options:0 error:&err];
             NSRange rightMatch = [rightExp rangeOfFirstMatchInString:everyLine options:0 range:whole];
             if (rightMatch.location != NSNotFound) { // blocked by sides
-                NSString *letter = [[everyLine substringWithRange:leftMatch] substringToIndex:1];
+                NSString *matchString = [everyLine substringWithRange:leftMatch];
+                NSString *letter = [matchString substringToIndex:1];
                 MJPawnInfo *leftBlocker = pawnAssociations[letter];
-                letter = [[everyLine substringWithRange:rightMatch] substringFromIndex:1];
+                matchString = [everyLine substringWithRange:rightMatch];
+                letter = [matchString substringFromIndex:1];
                 MJPawnInfo *rightBlocker = pawnAssociations[letter];
                 if (pawn.level == 0) { // maybe we have top blocker too?
                     MJPawnInfo *topBlocker = nil;
@@ -110,8 +119,10 @@
                         pawn.noSuiteWhenBlocked = YES;
                     }
                 }
-                if (!pawn.blockedIfExists)
+                if (!pawn.blockedIfExists) {
                     pawn.blockedIfExists = @[leftBlocker, rightBlocker];
+                    NSLog(@"%@ %.1f:%.1f %.1f:%.1f %.1f:%.1f", pawnKey, leftBlocker.coordinate.x, leftBlocker.coordinate.y, pawn.coordinate.x, pawn.coordinate.y, rightBlocker.coordinate.x, rightBlocker.coordinate.y);
+                }
             }
         }
     }];
