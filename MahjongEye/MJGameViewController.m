@@ -17,8 +17,7 @@
 
 typedef enum GameStateEnum {
     sGameIsUninitialized = 0,
-    sPlayerTurnShouldPlacePawn = 1,
-    sPlayerTurnCouldProceed = 2,
+    sPlayerTurn = 1,
     sDragonTurn = 3,
     //sPlayerTurnFieldHL = 1,
     //sPlayerTurnFieldPawnSelected = 2,
@@ -53,8 +52,7 @@ typedef enum PawnAvailabilityEnum {
 @property (nonatomic, strong) UIView *hlViewHand;
 @property (nonatomic, strong) UIImageView *hlViewField0;
 @property (nonatomic, strong) UIImageView *hlViewField1;
-
-@property (nonatomic, weak) MJTileManager *manager;
+@property (nonatomic, setter = setPlayerCouldProceed:) BOOL playerCouldProceed;
 
 @property (nonatomic, strong) UIImage *suiteImage0;
 @property (nonatomic, strong) UIImage *suiteImage1;
@@ -75,6 +73,7 @@ typedef enum PawnAvailabilityEnum {
 
 @synthesize pawns;
 @synthesize state, highlighState;
+@synthesize playerCouldProceed = _playerCouldProceed;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -91,8 +90,6 @@ typedef enum PawnAvailabilityEnum {
     self.suiteImage0 = [UIImage imageNamed:@"pawnBack0"];
     self.suiteImage1 = [UIImage imageNamed:@"pawnBack1"];
     self.field.delegate = self;
-    MJAppDelegate *appDelegate = (MJAppDelegate *)[UIApplication sharedApplication].delegate;
-    self.manager = appDelegate.tileManager;
 }
 
 - (UIImageView *) defaultCursorView {
@@ -117,8 +114,13 @@ typedef enum PawnAvailabilityEnum {
         self.pawnViews = [[NSMutableArray alloc] init];
         handScale = CGSizeMake(self.manager.fieldSize.width / 6, 60);
         CGSize fs = self.manager.tileSize;
-        MJPawnContainer *c = [[MJPawnContainer alloc] init];
-        [self.manager fillPawnContainer:c];
+        MJPawnContainer *c;
+        if (self.manager.lastPawnContainer) {
+            c = self.manager.lastPawnContainer;
+        } else {
+            c = [[MJPawnContainer alloc] init];
+            [self.manager fillPawnContainer:c];
+        }
         self.pawns = c;
         self.hlViewField0 = [self defaultCursorView];
         self.hlViewField1 = [self defaultCursorView];
@@ -130,13 +132,27 @@ typedef enum PawnAvailabilityEnum {
         self.hlViewHand.backgroundColor = [UIColor yellowColor];
     
         self.field.container = self.pawns;
-        self.state = sPlayerTurnShouldPlacePawn;
+        self.state = sPlayerTurn;
     }
+}
+
+- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+//    for (MJPawnView *v in self.pawnViews) {
+//        if (v.info)
+//            v.image = [self.manager getTileAtIndex:v.info.currentPawn];
+//        else
+//            v.image = [self.manager getTileAtIndex:v.handPawn.integerValue];
+//    }
+}
+
+- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [self.field setNeedsDisplay];
 }
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"pawnsToDraw"])
-        self.restPawnsCountLabel.text = [NSString stringWithFormat:@"%lu", self.pawns.pawnsToDraw.count, nil];
+        self.restPawnsCountLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)self.pawns.pawnsToDraw.count, nil];
     else
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 }
@@ -145,6 +161,11 @@ typedef enum PawnAvailabilityEnum {
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) dealloc {
+    if (pawns)
+       [pawns removeObserver:self forKeyPath:@"pawnsToDraw"];
 }
 
 - (CGRect) pawnRectBy:(MJPawnInfo *)p {
@@ -161,7 +182,7 @@ typedef enum PawnAvailabilityEnum {
 
 - (void) addPawnViewFor:(MJPawnInfo *)p {
     if (p.currentPawn >= 0) {
-        MJPawnView *v = [[MJPawnView alloc] initWithFrame:[self pawnRectBy:p] Tile:self.manager.tiles[p.currentPawn] HLImage:p.noSuiteWhenBlocked?self.suiteImage0:self.suiteImage1];
+        MJPawnView *v = [[MJPawnView alloc] initWithFrame:[self pawnRectBy:p] Tile:[self.manager getTileAtIndex:p.currentPawn] HLImage:p.noSuiteWhenBlocked?self.suiteImage0:self.suiteImage1];
         v.info = p;
         [self.field addSubview:v];
         if (p.blocked)
@@ -199,7 +220,7 @@ typedef enum PawnAvailabilityEnum {
     [pawns.slayerPawns enumerateObjectsUsingBlock:^(NSNumber *n, NSUInteger idx, BOOL *stop) {
         r.origin.x = idx * r.size.width;
         r.origin.y = CGRectGetMaxY(self.field.frame);
-        MJPawnView *v = [[MJPawnView alloc] initWithFrame:r Tile:self.manager.tiles[n.integerValue] HLImage:self.suiteImage1 Delegate:self];
+        MJPawnView *v = [[MJPawnView alloc] initWithFrame:r Tile:[self.manager getTileAtIndex:n.integerValue] HLImage:self.suiteImage1 Delegate:self];
 #warning update HL image when it comes to field
         v.handPawn = n;
         [self.view addSubview:v];
@@ -208,7 +229,7 @@ typedef enum PawnAvailabilityEnum {
     [pawns.dragonPawns enumerateObjectsUsingBlock:^(NSNumber *n, NSUInteger idx, BOOL *stop) {
         r.origin.x = CGRectGetMaxX(self.field.frame);
         r.origin.y = CGRectGetMinY(self.field.frame) + (idx * r.size.height);
-        MJPawnView *v = [[MJPawnView alloc] initDragonPawnWithFrame:r Tile:self.manager.tiles[n.integerValue] HLImage:self.suiteImage1];
+        MJPawnView *v = [[MJPawnView alloc] initDragonPawnWithFrame:r Tile:[self.manager getTileAtIndex:n.integerValue] HLImage:self.suiteImage1];
 #warning update HL image when it comes to field
         v.handPawn = n;
         [self.view addSubview:v];
@@ -245,8 +266,6 @@ typedef enum PawnAvailabilityEnum {
 - (NSDictionary *) checkFieldScoresFor:(NSArray *)pawnsOnField LeftPawns:(int *)leftPawns LeftPawnsCount:(int)leftCount {
     NSMutableArray *unblocked = [[NSMutableArray alloc] init];
     NSMutableArray *possibilities = [[NSMutableArray alloc] init];
-    NSNumber *bestP0 = nil;
-    MJPawnInfo *bestP1 = nil;
     NSMutableArray *results = [[NSMutableArray alloc] init];
     
     for (MJPawnInfo *p in pawnsOnField) {
@@ -390,20 +409,26 @@ typedef enum PawnAvailabilityEnum {
     return !(win || loose);
 }
 
+- (void)setPlayerCouldProceed:(BOOL)aPlayerCouldProceed {
+    _playerCouldProceed = aPlayerCouldProceed;
+    self.doneButton.enabled = _playerCouldProceed;
+}
+
 - (void)setState:(GameState)aState {
     if (state == aState) return;
     state = aState;
-    self.doneButton.enabled = aState == sPlayerTurnCouldProceed;
-    if (aState == sDragonTurn) {
-        if ([self checkGameIsNotOver])
-            [self performSelectorInBackground:@selector(doAI) withObject:nil];
+    if (aState == sPlayerTurnWaitingForAnimation)
+        return;
+    if (aState == sPlayerTurn) {
+        [self.manager fillUserHand:pawns];
+        [self rearrangeHand];
+        [self checkGameIsNotOver];
+        if (pawns.pawnsToDraw.count == 0)
+            self.playerCouldProceed = YES;
     } else {
-        if (aState == sPlayerTurnShouldPlacePawn) {
-            [self.manager fillUserHand:pawns];
-            [self rearrangeHand];
-            [self checkGameIsNotOver];
-            if (pawns.pawnsToDraw.count == 0)
-                self.state = sPlayerTurnCouldProceed;
+        if (aState == sDragonTurn) {
+            if ([self checkGameIsNotOver])
+                [self performSelectorInBackground:@selector(doAI) withObject:nil];
         }
     }
 #warning present helping labels somewhere...
@@ -612,7 +637,7 @@ typedef enum PawnAvailabilityEnum {
             MJPawnView *v = [self pawnViewByHandIndex:n Slayer:YES];
             CGRect targetFrame = CGRectMake(idx * hs.width, CGRectGetMaxY(self.field.frame), hs.width, hs.height);
             if (v == nil) {
-                MJPawnView *v = [[MJPawnView alloc] initWithFrame:targetFrame Tile:self.manager.tiles[n.integerValue] HLImage:self.suiteImage1 Delegate:self];
+                MJPawnView *v = [[MJPawnView alloc] initWithFrame:targetFrame Tile:[self.manager getTileAtIndex:n.integerValue] HLImage:self.suiteImage1 Delegate:self];
                 v.handPawn = n;
                 [self.view addSubview:v];
                 [self.pawnViews addObject:v];
@@ -634,7 +659,7 @@ typedef enum PawnAvailabilityEnum {
             targetFrame.origin.x = CGRectGetMaxX(self.field.frame);
             targetFrame.origin.y = CGRectGetMinY(self.field.frame) + (idx * hs.height);
             if (v == nil) {
-                MJPawnView *v = [[MJPawnView alloc] initDragonPawnWithFrame:targetFrame Tile:self.manager.tiles[n.integerValue] HLImage:self.suiteImage1];
+                MJPawnView *v = [[MJPawnView alloc] initDragonPawnWithFrame:targetFrame Tile:[self.manager getTileAtIndex:n.integerValue] HLImage:self.suiteImage1];
                 v.handPawn = n;
                 [self.view addSubview:v];
                 [self.pawnViews addObject:v];
@@ -675,7 +700,7 @@ typedef enum PawnAvailabilityEnum {
             else { // rearrange hand
                 [pawns.slayerPawns removeObject:v1.handPawn];
                 [self performSelectorOnMainThread:@selector(rearrangeHand) withObject:nil waitUntilDone:YES];
-                upcomingState = sPlayerTurnCouldProceed;
+                self.playerCouldProceed = YES;
             }
             [v0 removeFromSuperview];
             [v1 removeFromSuperview];
@@ -711,7 +736,7 @@ typedef enum PawnAvailabilityEnum {
             v.frame = target2;
             v.delegate = nil;
             [self performSelectorOnMainThread:@selector(rearrangeHand) withObject:nil waitUntilDone:YES];
-            upcomingState = sPlayerTurnCouldProceed;
+            self.playerCouldProceed = YES;
             [self updateTable];
             self.state = upcomingState;
             self.highlighState = hlNone;
@@ -751,13 +776,13 @@ typedef enum PawnAvailabilityEnum {
             v.delegate = nil;
             [self.manager dragonDraws:pawns];
             [self performSelectorOnMainThread:@selector(rearrangeDragonHand) withObject:nil waitUntilDone:YES];
-            upcomingState = sPlayerTurnShouldPlacePawn;
+            upcomingState = sPlayerTurn;
             [self updateTable];
             self.state = upcomingState;
             self.highlighState = hlNone;
         }];
     } else
-        self.state = sPlayerTurnShouldPlacePawn;
+        self.state = sPlayerTurn;
 }
 
 #pragma mark - FieldDelegate methods
@@ -772,10 +797,9 @@ typedef enum PawnAvailabilityEnum {
         case sPlayerLost:
         case sGameOver:
             break;
-        case sPlayerTurnCouldProceed:
-        case sPlayerTurnShouldPlacePawn: {
+        case sPlayerTurn: {
             PawnAvailability a;
-            if (self.state == sPlayerTurnShouldPlacePawn)
+            if (!self.playerCouldProceed)
                 a = aToPutOrPeek;
             else
                 a = aToPeek;
@@ -827,8 +851,7 @@ typedef enum PawnAvailabilityEnum {
         case sPlayerLost:
         case sGameOver:
             break;
-        case sPlayerTurnCouldProceed:
-        case sPlayerTurnShouldPlacePawn: {
+        case sPlayerTurn: {
             switch (self.highlighState) {
                 case hlNone: // do not care about these states. Something should be hilited before trySelect
                 case hlFieldSelected:
@@ -912,8 +935,7 @@ typedef enum PawnAvailabilityEnum {
         case sPlayerLost:
         case sGameOver:
             break;
-        case sPlayerTurnCouldProceed:
-        case sPlayerTurnShouldPlacePawn: {
+        case sPlayerTurn: {
             switch (self.highlighState) {
                 case hlNone:
                 case hlHandSelected:
@@ -946,8 +968,7 @@ typedef enum PawnAvailabilityEnum {
         case sPlayerLost:
         case sGameOver:
             break;
-        case sPlayerTurnCouldProceed:
-        case sPlayerTurnShouldPlacePawn: {
+        case sPlayerTurn: {
             switch (self.highlighState) {
                 case hlNone:
                 case hlHandSelected:
@@ -1003,13 +1024,14 @@ typedef enum PawnAvailabilityEnum {
 }
 
 - (IBAction)doneButtonTouched:(id)sender {
-    if (self.state == sPlayerTurnCouldProceed) {
-        self.state = sDragonTurn;
+    if (self.state == sPlayerTurn) {
+        if (self.playerCouldProceed)
+            self.state = sDragonTurn;
     }
 }
 
 - (IBAction)backPressed:(id)sender {
-#warning save state or something
+    self.manager.lastPawnContainer = pawns;
     [self dismissViewControllerAnimated:YES completion:^{
     }];
 }

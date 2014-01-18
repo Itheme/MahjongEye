@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MJBaseViewController.h"
 
-@interface MJViewController : UIViewController
+@interface MJViewController : MJBaseViewController
+@property (weak, nonatomic) IBOutlet UIButton *continueButton;
+- (IBAction)continuePressed:(id)sender;
+- (IBAction)startNewPressed:(id)sender;
 
 @end

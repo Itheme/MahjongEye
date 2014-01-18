@@ -20,10 +20,22 @@
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    self.continueButton.hidden = self.manager.lastPawnContainer == nil;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)continuePressed:(id)sender {
+}
+
+- (IBAction)startNewPressed:(id)sender {
+    self.manager.lastPawnContainer = nil;
 }
 
 @end

@@ -62,7 +62,8 @@
                        @"..............",
                        @".............."];
 
-    self.tileManager = [[MJTileManager alloc] initWithTiles:[UIImage imageNamed:@"tradactual.jpg"] Field:field Eye:eye];
+    //UIDeviceOrientation o = [UIDevice currentDevice].orientation;
+    self.tileManager = [[MJTileManager alloc] initWithTiles:[UIImage imageNamed:@"tradactual.jpg"] Field:field Eye:eye Horizontal:NO];//(o == UIDeviceOrientationLandscapeLeft) || (o == UIDeviceOrientationLandscapeRight)];
     return YES;
 }
 							

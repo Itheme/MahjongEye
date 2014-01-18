@@ -14,8 +14,10 @@
     NSUInteger fieldHeight; // in quaters of pawns
 }
 
-@property (nonatomic) CGSize tileSize;
-@property (nonatomic, strong) NSArray *tiles;
+@property (nonatomic) CGSize verticalTileSize;
+@property (nonatomic) CGSize horizontalTileSize;
+@property (nonatomic, strong) NSArray *vtiles;
+@property (nonatomic, strong) NSArray *htiles;
 @property (nonatomic, strong) NSArray *pawns;
 
 @end
@@ -23,30 +25,52 @@
 @implementation MJTileManager
 
 @synthesize fieldSize;
+@synthesize horizontal = _horizontal;
 
 - (void)setupTiles:(UIImage *)tiles {
-    NSMutableArray *t = [[NSMutableArray alloc] init];
+    NSMutableArray *vt = [[NSMutableArray alloc] init];
+    NSMutableArray *ht = [[NSMutableArray alloc] init];
     CGSize ts = tiles.size;
-    self.tileSize = CGSizeMake(ts.width / 9.0, ts.height / 5.0);
+    self.verticalTileSize = CGSizeMake(ts.width / 9.0, ts.height / 5.0);
+    self.horizontalTileSize = CGSizeMake(self.verticalTileSize.height, self.verticalTileSize.width);
     CGColorSpaceRef cspace = CGColorSpaceCreateDeviceRGB();
     for (int y = 0; y < 5; y++) {
         for (int x = 0; x < 9; x++) {
             if ((y > 2) && (x > 7)) continue;
             CGRect r = CGRectMake(x * self.tileSize.width, y * self.tileSize.height, self.tileSize.width, self.tileSize.height);
             CGImageRef cgIm = CGImageCreateWithImageInRect(tiles.CGImage, r);
-            UIImage *im = [UIImage imageWithCGImage:cgIm];
+            UIImage *vIm = [UIImage imageWithCGImage:cgIm scale:1.0 orientation:UIImageOrientationUp];
+            UIImage *hIm = [UIImage imageWithCGImage:cgIm scale:1.0 orientation:UIImageOrientationLeft];
             if ((y > 2) && (x < 4)) { // one image
-                [t addObject:im];
+                [vt addObject:vIm];
+                [ht addObject:hIm];
             } else {
-                [t addObject:im];
-                [t addObject:im];
-                [t addObject:im];
-                [t addObject:im];
+                [vt addObject:vIm];
+                [vt addObject:vIm];
+                [vt addObject:vIm];
+                [vt addObject:vIm];
+                [ht addObject:hIm];
+                [ht addObject:hIm];
+                [ht addObject:hIm];
+                [ht addObject:hIm];
             }
         }
     }
-    self.tiles = t;
+    self.vtiles = vt;
+    self.htiles = ht;
     CGColorSpaceRelease(cspace);
+}
+
+- (CGSize) getTileSize {
+    if (_horizontal)
+        return self.horizontalTileSize;
+    return self.verticalTileSize;
+}
+
+- (UIImage *)getTileAtIndex:(NSUInteger) index {
+    if (_horizontal)
+        return self.htiles[index];
+    return self.vtiles[index];
 }
 
 - (NSString *)shrinked:(NSString *)string {
@@ -138,9 +162,10 @@
     self.pawns = allPawns;
 }
 
-- (id) initWithTiles:(UIImage *) tiles Field:(NSArray *)field Eye:(NSArray *)eye {
+- (id) initWithTiles:(UIImage *) tiles Field:(NSArray *)field Eye:(NSArray *)eye Horizontal:(BOOL)horizontalTiles {
     self = [super init];
     if (self) {
+        _horizontal = horizontalTiles;
         [self setupTiles:tiles];
         [self setupPawnRelations:eye field:field];
     }
@@ -149,7 +174,7 @@
 
 - (void) fillPawnContainer:(MJPawnContainer *) container {
     NSMutableArray *allPawns = [[NSMutableArray alloc] init];
-    for (NSUInteger i = self.tiles.count; i--; )
+    for (NSUInteger i = self.vtiles.count; i--; )
         [allPawns insertObject:@(i) atIndex:1.0*rand()*allPawns.count/RAND_MAX];
     container.pawnsOnField = [self.pawns copy];
     for (MJPawnInfo *p in container.pawnsOnField) {
@@ -202,8 +227,8 @@
 
 - (void) setFieldSize:(CGSize)aFieldSize {
     fieldSize = aFieldSize;
-    self.tileSize = CGSizeMake(fieldSize.width * 2.0 / fieldWidth, fieldSize.height * 2.0 / fieldHeight);
-#warning adjust tile rotation here
+    self.verticalTileSize = CGSizeMake(fieldSize.width * 2.0 / fieldWidth, fieldSize.height * 2.0 / fieldHeight);
+    self.horizontalTileSize = CGSizeMake(self.verticalTileSize.height, self.verticalTileSize.width);
 }
 
 

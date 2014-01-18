@@ -10,7 +10,10 @@
 #import "MJAppDelegate.h"
 #import "MJPawnInfo.h"
 
-@implementation MJFieldView
+@implementation MJFieldView {
+    CGSize ts;
+    BOOL horizontal;
+}
 
 @synthesize container;
 
@@ -51,6 +54,12 @@
     [self setNeedsDisplay];
 }
 
+- (CGRect)tileRect:(MJPawnInfo *)p {
+    if (horizontal)
+        return CGRectMake(p.coordinate.y * ts.width, p.coordinate.x * ts.height, ts.width, ts.height);
+    return CGRectMake(p.coordinate.x * ts.width, p.coordinate.y * ts.height, ts.width, ts.height);
+}
+
 - (void)drawRect:(CGRect)rect
 {
     if (self.dragonImage == nil) return;
@@ -68,22 +77,24 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetRGBStrokeColor(context, 0, 0, 0, 1.0);
     CGContextSetLineWidth(context, 0.5);
-    CGSize ts = appDelegate.tileManager.tileSize;
+    //UIDeviceOrientation o = [UIDevice currentDevice].orientation;
+    horizontal = NO;//(o == UIDeviceOrientationLandscapeLeft) || (o == UIDeviceOrientationLandscapeRight);
+    ts = appDelegate.tileManager.tileSize;
     for (MJPawnInfo *p in container.pawnsOnField) {
         if (p.level == 0)
-            CGContextAddRect(context, CGRectMake(p.coordinate.x * ts.width, p.coordinate.y * ts.height, ts.width, ts.height));
+            CGContextAddRect(context, [self tileRect:p]);
     }
     CGContextStrokePath(context);
     CGContextSetRGBStrokeColor(context, 1.0, 1.0, 0, 1.0);
     for (MJPawnInfo *p in container.pawnsOnField) {
         if (p.eye == eGray)
-            CGContextAddRect(context, CGRectInset(CGRectMake(p.coordinate.x * ts.width, p.coordinate.y * ts.height, ts.width, ts.height), 5, 5));
+            CGContextAddRect(context, CGRectInset([self tileRect:p], 5, 5));
     }
     CGContextStrokePath(context);
     CGContextSetRGBStrokeColor(context, 1.0, 0.0, 0, 1.0);
     for (MJPawnInfo *p in container.pawnsOnField) {
         if (p.eye == eBlack)
-            CGContextAddRect(context, CGRectInset(CGRectMake(p.coordinate.x * ts.width, p.coordinate.y * ts.height, ts.width, ts.height), 5, 5));
+            CGContextAddRect(context, CGRectInset([self tileRect:p], 5, 5));
     }
     CGContextStrokePath(context);
 }

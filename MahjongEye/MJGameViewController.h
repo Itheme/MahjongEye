@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MJBaseViewController.h"
 #import "MJPawnContainer.h"
 #import "MJFieldView.h"
 #import "MJPawnView.h"
 
-@interface MJGameViewController : UIViewController <FieldDelegate, PawnViewMaster>
+@interface MJGameViewController : MJBaseViewController <FieldDelegate, PawnViewMaster>
 
 @property (nonatomic, strong, setter = setPawnContainer:) MJPawnContainer *pawns;
 
