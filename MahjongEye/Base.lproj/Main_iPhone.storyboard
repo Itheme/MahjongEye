@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4FC-sl-TAc">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4FC-sl-TAc">
                                 <rect key="frame" x="45" y="330" width="230" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Start new game">
@@ -27,8 +27,8 @@
                                     <segue destination="aXk-hk-Rb8" kind="modal" id="Cff-OP-WCl"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pe7-cy-jlm">
-                                <rect key="frame" x="45" y="401" width="230" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pe7-cy-jlm">
+                                <rect key="frame" x="45" y="405" width="230" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Continue with previous layout">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -38,12 +38,15 @@
                                     <segue destination="aXk-hk-Rb8" kind="modal" id="HUi-44-6MY"/>
                                 </connections>
                             </button>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rXI-2E-8Yj">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rXI-2E-8Yj">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="276"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="276" id="VLk-2y-knG"/>
+                                </constraints>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lay-sd-pEr">
-                                <rect key="frame" x="45" y="478" width="230" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lay-sd-pEr">
+                                <rect key="frame" x="45" y="480" width="230" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Game rules">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -54,9 +57,19 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="4FC-sl-TAc" firstAttribute="top" relation="greaterThanOrEqual" secondItem="rXI-2E-8Yj" secondAttribute="bottom" constant="54" id="a5l-uh-UI4"/>
+                            <constraint firstItem="xss-r4-6f4" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Lay-sd-pEr" secondAttribute="bottom" constant="60" id="f57-1r-Rix"/>
+                            <constraint firstItem="rXI-2E-8Yj" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="hSw-wy-Bb0"/>
+                            <constraint firstAttribute="trailing" secondItem="rXI-2E-8Yj" secondAttribute="trailing" id="iZ7-Sr-ubh"/>
+                            <constraint firstItem="pe7-cy-jlm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="4FC-sl-TAc" secondAttribute="bottom" constant="40" id="lfr-gF-6W9"/>
+                            <constraint firstItem="Lay-sd-pEr" firstAttribute="top" relation="greaterThanOrEqual" secondItem="pe7-cy-jlm" secondAttribute="bottom" constant="40" id="mff-4O-AZn"/>
+                            <constraint firstItem="rXI-2E-8Yj" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="qpS-1g-JKu"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="continueButton" destination="pe7-cy-jlm" id="zFC-mh-RHI"/>
+                        <outlet property="scrollView" destination="rXI-2E-8Yj" id="LQw-KC-eL4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -166,7 +179,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hh2-wB-6Le" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="651" y="59"/>
+            <point key="canvasLocation" x="649" y="37"/>
         </scene>
         <!--Rules View Controller-->
         <scene sceneID="kgb-av-461">

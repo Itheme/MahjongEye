@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MJGame.h"
 
 @class MJPawnContainer;
 
@@ -25,6 +26,7 @@
 @property (nonatomic, setter = setHorizontal:) BOOL horizontal;
 @property (nonatomic, strong) MJPawnContainer *lastPawnContainer;
 @property (nonatomic, weak) id<BackupDelegate> backupDelegate;
+@property (nonatomic) GameAILevel gameDifficultyPresentedInUI;
 
 - (id) initWithTiles:(UIImage *) tiles Field:(NSArray *)field Eye:(NSArray *)eye Horizontal:(BOOL) horizontalTiles;
 

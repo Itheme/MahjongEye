@@ -107,6 +107,7 @@ typedef enum PawnAvailabilityEnum {
         } else {
             c = [[MJPawnContainer alloc] init];
             [self.manager fillPawnContainer:c];
+            c.lastGameAI = self.manager.gameDifficultyPresentedInUI;
         }
         self.pawns = c;
         self.hlViewField0 = [self defaultCursorView];
@@ -321,35 +322,45 @@ typedef enum PawnAvailabilityEnum {
                 target0 = p;
         }
     NSArray *leftPawns = [pawns.pawnsToDraw arrayByAddingObjectsFromArray:pawns.slayerPawns];
-    if (target0 == nil) {
-        int *lp = malloc(sizeof(int)*leftPawns.count);
-        [leftPawns enumerateObjectsUsingBlock:^(NSNumber *n, NSUInteger idx, BOOL *stop) {
-            lp[idx] = n.intValue;
-        }];
-        NSDictionary *res = [self checkFieldScoresFor:pawns.pawnsOnField LeftPawns:lp LeftPawnsCount:leftPawns.count];
-        free(lp);
-        if (res) {
-            target0 = res[@"fieldPos"];
-            self.hlDragonPawn = res[@"pawnInHand"];
-        } else
-            target0 = nil;
-        // Now just stupid pawns putting
-//        MJPawnInfo *target1 = nil;
-//        MJPawnInfo *target2 = nil;
-//        while (true) {
-//            int i = 1.0*pawns.pawnsOnField.count*rand()/RAND_MAX;
-//            MJPawnInfo *p = pawns.pawnsOnField[i];
-//            if ((p.currentPawn < 0) && (p.couldBePlaced)) {
-//                target = p;
-//                break;
-//            }
-//        }
-    } else {
-        self.hlDragonPawn = nil;
-        if (pawns.dragonPawns.count > 0)
-            self.hlDragonPawn = pawns.dragonPawns.lastObject;
+    switch (pawns.lastGameAI) {
+        case aiStupid:
+            if (target0 == nil) {
+                // Now just stupid pawns putting
+                for (int j = 10000; j--; ) {
+                    int i = 1.0*pawns.pawnsOnField.count*rand()/RAND_MAX;
+                    MJPawnInfo *p = pawns.pawnsOnField[i];
+                    if ((p.currentPawn < 0) && (p.couldBePlaced)) {
+                        target0 = p;
+                        break;
+                    }
+                }
+            }
+            self.hlDragonPawn = nil;
+            if (pawns.dragonPawns.count > 0)
+                self.hlDragonPawn = pawns.dragonPawns.lastObject;
+            break;
+        default:
+            if (target0 == nil) {
+                int *lp = malloc(sizeof(int)*leftPawns.count);
+                [leftPawns enumerateObjectsUsingBlock:^(NSNumber *n, NSUInteger idx, BOOL *stop) {
+                    lp[idx] = n.intValue;
+                }];
+                NSDictionary *res = [self checkFieldScoresFor:pawns.pawnsOnField LeftPawns:lp LeftPawnsCount:leftPawns.count];
+                free(lp);
+                if (res) {
+                    target0 = res[@"fieldPos"];
+                    self.hlDragonPawn = res[@"pawnInHand"];
+                } else
+                    target0 = nil;
+                
+            } else {
+                self.hlDragonPawn = nil;
+                if (pawns.dragonPawns.count > 0)
+                    self.hlDragonPawn = pawns.dragonPawns.lastObject;
+            }
+            #warning improve AI here
+            break;
     }
-#warning improve AI here
     [self performSelectorOnMainThread:@selector(dragonPuts:) withObject:target0 waitUntilDone:YES];
 }
 
@@ -421,6 +432,7 @@ typedef enum PawnAvailabilityEnum {
         if (pawns.pawnsToDraw.count == 0)
             self.playerCouldProceed = YES;
     } else {
+        self.playerCouldProceed = NO;
         if (aState == sDragonTurn) {
             if ([self checkGameIsNotOver])
                 [self performSelectorInBackground:@selector(doAI) withObject:nil];

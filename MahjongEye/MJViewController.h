@@ -13,5 +13,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *continueButton;
 - (IBAction)continuePressed:(id)sender;
 - (IBAction)startNewPressed:(id)sender;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @end

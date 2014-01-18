@@ -7,6 +7,7 @@
 //
 
 #import "MJGame.h"
+#import "MJTileManager.h"
 
 @interface MJGame () {
 }
@@ -17,13 +18,14 @@
 
 @implementation MJGame
 
-- (id) initWithManager:(MJTileManager *) mgr {
-    self = [super init];
-    if (self) {
-        self.manager = mgr;
-    }
-    return self;
-}
+//- (id) initWithManager:(MJTileManager *) mgr {
+//    self = [super init];
+//    if (self) {
+//        self.manager = mgr;
+//    }
+//    return self;
+//}
 
 #warning class not used yet
 @end
+

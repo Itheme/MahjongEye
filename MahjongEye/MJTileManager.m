@@ -265,6 +265,7 @@
             if (self.lastPawnContainer) {
                 [self fillRestoredPawnContainer:self.lastPawnContainer];
                 [self.lastPawnContainer restoreField];
+                self.gameDifficultyPresentedInUI = self.lastPawnContainer.lastGameAI;
             }
         }
     }

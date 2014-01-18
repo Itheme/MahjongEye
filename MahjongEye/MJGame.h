@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MJTileManager.h"
 
 typedef enum GameStateEnum {
     sGameIsUninitialized = 0,
@@ -27,6 +26,6 @@ typedef enum GameAILevelEnum {
 
 @interface MJGame : NSObject
 
-- (id) initWithManager:(MJTileManager *) mgr;
+//- (id) initWithManager:(MJTileManager *) mgr;
 
 @end
