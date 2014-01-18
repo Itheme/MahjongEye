@@ -242,14 +242,15 @@
 
 - (NSString *) getCacheFile {
     NSString *cachesPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *cacheFile = [cachesPath stringByAppendingPathComponent:@"gameState"];
+    NSString *cacheFile = [cachesPath stringByAppendingPathComponent:@"gameState.txt"];
     return cacheFile;
 }
 
 - (void) saveCurrentState {
     NSArray *gameObject;
-    if (self.lastPawnContainer)
-        gameObject = @[self.lastPawnContainer];
+    MJPawnContainer *container = [self.backupDelegate backupData];
+    if (container)
+        gameObject = @[container];
     else
         gameObject = [[NSArray alloc] init];
     
@@ -257,12 +258,20 @@
 }
 
 - (void) tryToLoad {
-    NSArray* gameObject = [NSKeyedUnarchiver unarchiveObjectWithFile:[self getCacheFile]];
-    if (gameObject.count > 0) {
-        self.lastPawnContainer = gameObject.firstObject;
-        if (self.lastPawnContainer) {
-            [self fillRestoredPawnContainer:self.lastPawnContainer];
-            [self.lastPawnContainer restoreField];
+    @try {
+        NSArray* gameObject = [NSKeyedUnarchiver unarchiveObjectWithFile:[self getCacheFile]];
+        if (gameObject.count > 0) {
+            self.lastPawnContainer = gameObject.firstObject;
+            if (self.lastPawnContainer) {
+                [self fillRestoredPawnContainer:self.lastPawnContainer];
+                [self.lastPawnContainer restoreField];
+            }
+        }
+    }
+    @catch (NSException *exception) {
+        if (exception) {
+            NSLog(@"%@", exception);
+            self.lastPawnContainer = nil;
         }
     }
 }

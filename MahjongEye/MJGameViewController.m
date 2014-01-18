@@ -119,7 +119,13 @@ typedef enum PawnAvailabilityEnum {
         self.hlViewHand.backgroundColor = [UIColor yellowColor];
     
         self.field.container = self.pawns;
-        self.state = sPlayerTurn;
+        if (self.manager.lastPawnContainer == nil)
+            self.state = sPlayerTurn;
+        else {
+            self.state = c.lastGameState;
+#warning + Game AI assignment
+            self.playerCouldProceed = c.userCouldProceed;
+        }
     }
 }
 
@@ -1008,15 +1014,19 @@ typedef enum PawnAvailabilityEnum {
 #pragma Mark - BackupDelegate methods
 
 - (id) backupData {
-    NSNumber *st = [NSNumber numberWithInt:(int)self.state];
-    NSNumber *pl = [NSNumber numberWithBool:self.playerCouldProceed];
-    return @{@"state": st, @"userCouldProceed": pl};
+//    NSNumber *st = [NSNumber numberWithInt:(int)self.state];
+//    NSNumber *pl = [NSNumber numberWithBool:self.playerCouldProceed];
+//    return @{@"state": st, @"userCouldProceed": pl};
+    return self.pawns;
 }
 
-- (void) restoreFrom:(id)backup {
-    NSDictionary *d = backup;
-    self.state = 
-}
+//- (void) restoreFrom:(id)backup {
+//    NSDictionary *d = backup;
+//    NSNumber *n = d[@"state"];
+//    self.state = (GameState)n.intValue;
+//    n = d[@"userCouldProceed"];
+//    self.playerCouldProceed = n.boolValue;
+//}
 
 #pragma Mark - button events
 

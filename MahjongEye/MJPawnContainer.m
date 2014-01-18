@@ -22,7 +22,7 @@
     [encoder encodeObject:self.slayerPawns forKey:@"slayerPawns"];
     [encoder encodeObject:self.dragonPawns forKey:@"dragonPawns"];
     [encoder encodeObject:@((int)self.lastGameState) forKey:@"lastGameState"];
-    [encoder encodeObject:@((int)self.lastGameAI) forKey:@"dragonPawns"];
+    [encoder encodeObject:@((int)self.lastGameAI) forKey:@"gameAI"];
     [encoder encodeObject:@(self.userCouldProceed) forKey:@"userCouldProceed"];
     
     NSMutableArray *fieldPieces = [[NSMutableArray alloc] init];
@@ -39,9 +39,11 @@
         self.dragonPawns = [decoder decodeObjectForKey:@"dragonPawns"];
         NSNumber *n = [decoder decodeObjectForKey:@"lastGameState"];
         self.lastGameState = (GameState)(n.intValue);
-        n = [decoder decodeObjectForKey:@"dragonPawns"];
+        n = [decoder decodeObjectForKey:@"gameAI"];
         self.lastGameAI = (GameAILevel)(n.intValue);
-        self.fieldPieces = [decoder decodeObjectForKey:@"userCouldProceed"];
+        n = [decoder decodeObjectForKey:@"userCouldProceed"];
+        self.userCouldProceed = n.boolValue;
+        self.fieldPieces = [decoder decodeObjectForKey:@"fieldPieces"];
     }
     return self;
 }

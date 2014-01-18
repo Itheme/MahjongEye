@@ -13,7 +13,7 @@
 @protocol BackupDelegate
 
 - (id) backupData;
-- (void) restoreFrom:(id)backup;
+//- (void) restoreFrom:(id)backup;
 
 @end
 
