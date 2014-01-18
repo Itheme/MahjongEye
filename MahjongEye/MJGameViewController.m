@@ -15,20 +15,6 @@
 #define kBADFIELDSCORE 10000
 
 
-typedef enum GameStateEnum {
-    sGameIsUninitialized = 0,
-    sPlayerTurn = 1,
-    sDragonTurn = 3,
-    //sPlayerTurnFieldHL = 1,
-    //sPlayerTurnFieldPawnSelected = 2,
-    //sPlayerTurnFieldPawnSelectedHL2 = 3,
-    //sPlayerTurnHandPawnSelected = 4,
-    sPlayerTurnWaitingForAnimation = 100,
-    sPlayerWon = 4,
-    sPlayerLost = 5,
-    sGameOver = 6
-} GameState;
-
 typedef enum HighlightedStateEnum {
     hlNone = 0,
     hlFieldHL = 1,
@@ -87,6 +73,7 @@ typedef enum PawnAvailabilityEnum {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.manager.backupDelegate = self;
     self.suiteImage0 = [UIImage imageNamed:@"pawnBack0"];
     self.suiteImage1 = [UIImage imageNamed:@"pawnBack1"];
     self.field.delegate = self;
@@ -411,12 +398,14 @@ typedef enum PawnAvailabilityEnum {
 
 - (void)setPlayerCouldProceed:(BOOL)aPlayerCouldProceed {
     _playerCouldProceed = aPlayerCouldProceed;
+    pawns.userCouldProceed = aPlayerCouldProceed;
     self.doneButton.enabled = _playerCouldProceed;
 }
 
 - (void)setState:(GameState)aState {
     if (state == aState) return;
     state = aState;
+    pawns.lastGameState = aState;
     if (aState == sPlayerTurnWaitingForAnimation)
         return;
     if (aState == sPlayerTurn) {
@@ -1014,6 +1003,19 @@ typedef enum PawnAvailabilityEnum {
         self.pawns = nil;
         self.lastAlert = nil;
     }];
+}
+
+#pragma Mark - BackupDelegate methods
+
+- (id) backupData {
+    NSNumber *st = [NSNumber numberWithInt:(int)self.state];
+    NSNumber *pl = [NSNumber numberWithBool:self.playerCouldProceed];
+    return @{@"state": st, @"userCouldProceed": pl};
+}
+
+- (void) restoreFrom:(id)backup {
+    NSDictionary *d = backup;
+    self.state = 
 }
 
 #pragma Mark - button events

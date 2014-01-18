@@ -12,7 +12,7 @@
 #import "MJFieldView.h"
 #import "MJPawnView.h"
 
-@interface MJGameViewController : MJBaseViewController <FieldDelegate, PawnViewMaster>
+@interface MJGameViewController : MJBaseViewController <FieldDelegate, PawnViewMaster, BackupDelegate>
 
 @property (nonatomic, strong, setter = setPawnContainer:) MJPawnContainer *pawns;
 

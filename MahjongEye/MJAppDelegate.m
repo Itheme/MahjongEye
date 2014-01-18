@@ -64,6 +64,7 @@
 
     //UIDeviceOrientation o = [UIDevice currentDevice].orientation;
     self.tileManager = [[MJTileManager alloc] initWithTiles:[UIImage imageNamed:@"tradactual.jpg"] Field:field Eye:eye Horizontal:NO];//(o == UIDeviceOrientationLandscapeLeft) || (o == UIDeviceOrientationLandscapeRight)];
+    [self.tileManager tryToLoad];
     return YES;
 }
 							
@@ -91,7 +92,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [self.tileManager saveCurrentState];
 }
 
 @end

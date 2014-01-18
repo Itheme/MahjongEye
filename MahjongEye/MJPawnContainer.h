@@ -7,13 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MJGame.h"
 
-@interface MJPawnContainer : NSObject
+@interface MJPawnContainer : NSObject <NSCoding>
 
 @property (nonatomic, strong) NSArray *pawnsOnField; // MJPawnInfos
 // numbers
 @property (nonatomic, strong) NSMutableArray *pawnsToDraw;
 @property (nonatomic, strong) NSMutableArray *slayerPawns;
 @property (nonatomic, strong) NSMutableArray *dragonPawns;
+@property (nonatomic) GameState lastGameState;
+@property (nonatomic) GameAILevel lastGameAI;
+@property (nonatomic) BOOL userCouldProceed;
+
+- (void) encodeWithCoder:(NSCoder *) encoder;
+- (id) initWithCoder:(NSCoder *) decoder;
+- (void) restoreField;
 
 @end

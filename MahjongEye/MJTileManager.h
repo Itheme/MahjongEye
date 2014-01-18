@@ -7,7 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MJPawnContainer.h"
+
+@class MJPawnContainer;
+
+@protocol BackupDelegate
+
+- (id) backupData;
+- (void) restoreFrom:(id)backup;
+
+@end
 
 @interface MJTileManager : NSObject
 
@@ -16,6 +24,7 @@
 @property (nonatomic, setter = setFieldSize:) CGSize fieldSize;
 @property (nonatomic, setter = setHorizontal:) BOOL horizontal;
 @property (nonatomic, strong) MJPawnContainer *lastPawnContainer;
+@property (nonatomic, weak) id<BackupDelegate> backupDelegate;
 
 - (id) initWithTiles:(UIImage *) tiles Field:(NSArray *)field Eye:(NSArray *)eye Horizontal:(BOOL) horizontalTiles;
 
@@ -24,5 +33,9 @@
 - (void) dragonDraws:(MJPawnContainer *) container;
 - (void) fillUserHand:(MJPawnContainer *) container;
 - (UIImage *)getTileAtIndex:(NSUInteger) index;
+
+// state management
+- (void) tryToLoad;
+- (void) saveCurrentState;
 
 @end

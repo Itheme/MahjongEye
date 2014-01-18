@@ -25,7 +25,5 @@
     return self;
 }
 
-- (void) start {
 #warning class not used yet
-}
 @end

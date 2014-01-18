@@ -7,6 +7,8 @@
 //
 
 #import "MJTileManager.h"
+#import "MJPawnContainer.h"
+
 #import "MJPawnInfo.h"
 
 @interface MJTileManager () {
@@ -172,6 +174,13 @@
     return self;
 }
 
+- (void) fillRestoredPawnContainer:(MJPawnContainer *) container {
+    container.pawnsOnField = [self.pawns copy];
+    for (MJPawnInfo *p in container.pawnsOnField) {
+        p.currentPawn = -1;
+    }
+}
+
 - (void) fillPawnContainer:(MJPawnContainer *) container {
     NSMutableArray *allPawns = [[NSMutableArray alloc] init];
     for (NSUInteger i = self.vtiles.count; i--; )
@@ -229,6 +238,33 @@
     fieldSize = aFieldSize;
     self.verticalTileSize = CGSizeMake(fieldSize.width * 2.0 / fieldWidth, fieldSize.height * 2.0 / fieldHeight);
     self.horizontalTileSize = CGSizeMake(self.verticalTileSize.height, self.verticalTileSize.width);
+}
+
+- (NSString *) getCacheFile {
+    NSString *cachesPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *cacheFile = [cachesPath stringByAppendingPathComponent:@"gameState"];
+    return cacheFile;
+}
+
+- (void) saveCurrentState {
+    NSArray *gameObject;
+    if (self.lastPawnContainer)
+        gameObject = @[self.lastPawnContainer];
+    else
+        gameObject = [[NSArray alloc] init];
+    
+    [NSKeyedArchiver archiveRootObject:gameObject toFile:[self getCacheFile]];
+}
+
+- (void) tryToLoad {
+    NSArray* gameObject = [NSKeyedUnarchiver unarchiveObjectWithFile:[self getCacheFile]];
+    if (gameObject.count > 0) {
+        self.lastPawnContainer = gameObject.firstObject;
+        if (self.lastPawnContainer) {
+            [self fillRestoredPawnContainer:self.lastPawnContainer];
+            [self.lastPawnContainer restoreField];
+        }
+    }
 }
 
 
