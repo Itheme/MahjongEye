@@ -14,6 +14,12 @@
 // AI calculation
 #define kBADFIELDSCORE 10000
 
+typedef struct AITurnContextTag {
+    int *leftPawns;
+    int leftCount;
+    //int *probablyNotInPlayersHand;
+    //int probablyNotInPlayersHandCount;
+} AITurnContext, *AITurnContextPtr;
 
 typedef enum HighlightedStateEnum {
     hlNone = 0,
@@ -233,52 +239,59 @@ typedef enum PawnAvailabilityEnum {
 
 
 // AI functions
-- (double) fieldMatchSummOfProbabilities:(NSArray *) unblockedPawns LeftPawns:(int *)leftPawns LeftPawnsCount:(int)leftCount Limit:(double) limit {
-    if (leftCount > 0) {
+- (double) fieldMatchSummOfProbabilities:(NSArray *) unblockedPawns AIContext:(AITurnContextPtr)context Limit:(double) limit {
+    if (context->leftCount > 0) {
         double res = 0;
         for (MJPawnInfo *p in unblockedPawns) {
-            int p0 = p.currentPawn;
-            BOOL newOne = p0 < 0;
-            if (newOne)
-                p0 = p.possiblePawn;
+            int p0 = p.possiblePawn;
             p0 >>= 2;
             double inc = 1.0;
             if (p.eye > eField)
                 inc = (p.eye == eGray)?7.0:10;
-            for (int i = leftCount; i--; )
-                if (p0 == leftPawns[i])
+            for (int i = context->leftCount; i--; )
+                if (p0 == context->leftPawns[i])
                     res += inc;
 #warning Take into account player's pawns. They are not trustworthy!
 #warning + interfield removals
         }
-        res /= leftCount;
+        res /= context->leftCount;
         return res;
     }
     return 0;
 }
 
-- (NSDictionary *) checkFieldScoresFor:(NSArray *)pawnsOnField LeftPawns:(int *)leftPawns LeftPawnsCount:(int)leftCount {
+- (NSDictionary *) checkFieldScoresFor:(NSArray *)pawnsOnField AIContext:(AITurnContextPtr)context {
     NSMutableArray *unblocked = [[NSMutableArray alloc] init];
     NSMutableArray *possibilities = [[NSMutableArray alloc] init];
     NSMutableArray *results = [[NSMutableArray alloc] init];
     
     for (MJPawnInfo *p in pawnsOnField) {
         if (p.currentPawn >= 0) {
-            if (!p.blocked)
+            if (!p.blocked) {
                 [unblocked addObject:p];
+                // removing pawns on field from potential player's pawn list
+                #warning consider pawns put by player. Do not remove them
+                int unblockedP = p.currentPawn >> 2;
+                for (int i = context->leftCount; i--; )
+                    if (context->leftPawns[i] == unblockedP) {
+                        context->leftPawns[i] = context->leftPawns[--context->leftCount];
+                    }
+            }
         } else
             if (p.couldBePlaced)
                 [possibilities addObject:p];
+        p.possiblePawn = p.currentPawn;
     }
     double initialRes = INFINITY;//[self fieldMatchSummOfProbabilities:unblocked LeftPawns:leftPawns];
-    for (NSNumber *possibility0 in pawns.dragonPawns) {
+    
+    for (NSNumber *possibility0 in pawns.dragonPawns) { // peak one pawn from dragon hand
         int p0 = possibility0.intValue;
-        for (MJPawnInfo *possibility1 in possibilities) {
+        for (MJPawnInfo *possibility1 in possibilities) { // and put it onto one possible place (first dragon turn)
             possibility1.possiblePawn = p0;
             [unblocked removeAllObjects];
             double res = 0;
             for (MJPawnInfo *p in pawnsOnField) {
-                if (((p.currentPawn >= 0) || (p.possiblePawn >= 0)) && !p.possibleBlocked) {
+                if ((p.possiblePawn >= 0) && !p.possibleBlocked) {
                     for (MJPawnInfo *unblockedP in unblocked) // this check is obsolete in case of two turn prediction
                         if ([unblockedP currentOrPossibleEquals:p]) {
                             res += kBADFIELDSCORE;
@@ -287,8 +300,11 @@ typedef enum PawnAvailabilityEnum {
                     [unblocked addObject:p];
                 }
             }
-            res += [self fieldMatchSummOfProbabilities:unblocked LeftPawns:leftPawns LeftPawnsCount:leftCount Limit:initialRes];
+            res += [self fieldMatchSummOfProbabilities:unblocked AIContext:context Limit:initialRes];
             if (res < initialRes * 1.01) {
+                if (res < initialRes * 0.95) {
+                    [results removeAllObjects];
+                }
                 initialRes = res;
                 if (results.count > 0) {
                     NSDictionary *d = results.firstObject;
@@ -341,18 +357,19 @@ typedef enum PawnAvailabilityEnum {
             break;
         default:
             if (target0 == nil) {
-                int *lp = malloc(sizeof(int)*leftPawns.count);
+                AITurnContext context;
+                context.leftCount = leftPawns.count;
+                context.leftPawns = malloc(sizeof(int)*leftPawns.count);
                 [leftPawns enumerateObjectsUsingBlock:^(NSNumber *n, NSUInteger idx, BOOL *stop) {
-                    lp[idx] = n.intValue;
+                    context.leftPawns[idx] = n.intValue >> 2;
                 }];
-                NSDictionary *res = [self checkFieldScoresFor:pawns.pawnsOnField LeftPawns:lp LeftPawnsCount:leftPawns.count];
-                free(lp);
+                NSDictionary *res = [self checkFieldScoresFor:pawns.pawnsOnField AIContext:&context];
+                free(context.leftPawns);
                 if (res) {
                     target0 = res[@"fieldPos"];
                     self.hlDragonPawn = res[@"pawnInHand"];
                 } else
                     target0 = nil;
-                
             } else {
                 self.hlDragonPawn = nil;
                 if (pawns.dragonPawns.count > 0)
